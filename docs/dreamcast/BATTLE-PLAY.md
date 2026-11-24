@@ -65,7 +65,10 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
 
 ## Test builds
 
-- `/cd/debug/vs.txt` `zone act chara1 chara2 [x y] [clock]` starts a race directly.
+- `/cd/debug/vs.txt` `zone act chara1 chara2 [x y] [clock] [cpu]` starts a race directly (`cpu` 1:
+  player 2 is the CPU).
+- `/cd/debug/cpu_skill.txt` `0` / `1` / `2`: the CPU's skill (easy, normal, hard).
+- `SRDC_ROUTES=copy sh build_disc.sh`: put only the racing lines already made on the disc (no search).
 - `/cd/debug/vs_p2.txt` `1` scripts player 2's pad, in the menus and the race; `2` scripts both
   pads (the real pad's Start and B still reach player 1, so pause / quit can be tested). Use this
   for emulator runs with one keyboard. It also turns on the VS frame log (fps, update / wait /
@@ -74,7 +77,10 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
 - Release discs (and the kits' discs) have no scripted pad: a race needs a second controller in
   port B. Flycast must map one to port B to play it.
 - Host tests: `make -C dreamcast/game/vs host-test` (rules on Leaf Storm with the real player and
-  objects code) and `make -C dreamcast/game/menus host-test` (`test_vs`: the VS menu flow).
+  objects code; `test_cpu_unit`: the CPU's decisions on synthetic lines), `make -C dreamcast/game/vs
+  cpu-test [CPU_ARGS="-p1 ... -upsets 3 -seed 2"]` (the CPU racing every stage with the real simulation:
+  goal time, deaths, recoveries; `test/test_cpu.c` options: a CPU player 1 on its own lines, random upsets,
+  skill, seed, a trace) and `make -C dreamcast/game/menus host-test` (`test_vs`: the VS menu flow).
 
 ## Sound
 
@@ -89,12 +95,87 @@ about 150 KB of sound RAM).
 - **Host check:** `test_sound` (bank2) confirms that the same voice id starts from z1b for player 2
   and from z1s for player 1.
 
+## Vs CPU (native)
+
+The DS game had no computer rival (Battle Play needed two consoles). The Dreamcast adds one:
+BATTLE PLAY page → **ONE PLAYER** (the original button font has no digits, V or U, so the labels are
+TWO PLAYERS / ONE PLAYER; menus: MENUS.md section 15). Player 1 picks a character; player 2, the CPU,
+takes the other one and is marked **CPU** on the select, stage select and results plates and in the
+race bar (the name plates' font, `menus_text_mask`). Stage select, race, results, TRY AGAIN and CHANGE
+CHARACTER/ACT are the Battle Play ones; `MenuRequest.cpu` carries the mode.
+
+**What the CPU is.** `vs/vs_cpu.c` only makes player 2's DS pad (the bits `ds_pad` makes from a
+controller); player 2 then runs the same player, object, item, checkpoint and race code as a human.
+Nothing about the CPU changes the world: no speed, invulnerability, rings or rule exceptions. It reads
+its own player, the map collision around it and the rival's position and pad (what a player sees on the
+split screen).
+
+**How it drives.** Each stage has racing lines for each character (`/cd/vs/zNA_C.rte`, `vs/vs_route.h`):
+the position and pad of every frame of a way through the stage. Every frame the CPU finds where it is
+on its line (around where it expects to be, so standing on a ride or a loop keeps the place) and plays
+the line's pad there; a press it already holds is let go for a frame so the press happens. Off its line
+(knocked back, pushed, warped, slowed, a missed jump) it takes the nearest point of any line with the
+least time left to the goal (lines are indexed by a 128 px grid) and steers there with a player's moves
+(run, jump at walls and up to the line, air action), or waits at a ride's boarding place when the ride
+left without it. No progress for 3 s: it backs up along the line for a run-up (further back each try),
+then jumps, backs off and spin-dashes, and leaves a line that keeps failing for 5 s. Confusion (the
+rival's item turns the D-pad): after 40 frames, like a player, it presses the key that now gives the way
+it wants. Next to the rival on the ground with tension to spare it boosts into it (at most every 4 s).
+Where a stage has no complete line it follows the rival's path (the furthest place the rival passed 2 s
+or more ago).
+
+**Variation and skill.** The seed changes every race (reproducible: race count, zone, act). Skill
+(normal by default; `/cd/debug/cpu_skill.txt` 0 easy, 1 normal, 2 hard in test builds) decides how many
+of the line's boost stretches the CPU uses (easy drops about half, normal a fifth, hard none; never just
+before one of the line's jumps; never when the rival is well ahead).
+
+**Where the lines come from.** `vs/route/vs_route.c` (host tool, run at disc build time on the owner's
+converted stages; nothing derived from the game is in the repository):
+1. **Line 0:** a search with the real game simulation (`route/vs_sim.c`: player, objects, cameras,
+   race rules) in the style of Go-Explore. The stage is cut into 64 px cells (stage of the guide,
+   ground / air). The archive keeps a snapshot of the whole simulation (`route/snap.c`: every static of
+   the simulation sources, bracketed in link order by `snap_begin.c` / `snap_end.c`, and the objects'
+   mutable heap copies) and the fastest way into each cell. Each round restores a promising cell and plays
+   pad macros (run, boost, jumps, spin dash, crouch, air action, waiting; mostly waiting and hops while a
+   gimmick carries the player), biased by a distance field to the goal through the stage's free space.
+   When that finds nothing the guide becomes the checkpoint markers in their order.
+2. **Coverage:** up to 24 places the search reached early that no line passes near; from each, a short
+   search to a point where it joins a line going the same way.
+3. **Trials:** the CPU itself, in the simulation, from the start with one upset (slowdown, confusion,
+   tension drain, knock-back, a missed jump, no boost, easy skill, a rival CPU on the same lines, a rival
+   and an item). Where it loses the lines for good, a branch is searched from there to a joining point.
+Limits are in search rounds, so a build gives the same lines on every machine (the time is only a
+safety cap; the Windows build `vs_route.exe` and the Linux build replay each other's lines exactly). A
+line is checked by replaying it from the start. Stages where no way to the goal is found get the
+furthest grounded part as a partial line (header flag `VSR_INCOMPLETE`).
+
+`make -C dreamcast/game/vs routes` (Linux, `-j` for parallel) or the Windows kit (`vs_route.exe`) makes
+the missing lines; `build_disc.sh` calls it. Delete `build/dreamcast/vs/routes` to make them again.
+
+**Shared world fix (both modes).** Water levels are a per-camera value, and the objects run with player
+1's camera, so player 2's water (Water Palace underwater state, air bubbles, splashes; the Mirage Road
+sand ship) followed player 1. The water triggers now also keep a level per player (`obj_water_of`,
+`objects_player_water`), the player-specific readers use it, and player 2's camera gets its own level
+(`vs_sync_water`). On the DS each console had its own.
+
 ## Known gaps
 
-- **Wording in other languages:** the cropped "BATTLE" label and "QUIT BATTLE ?" are built for
-  English, French, German and Italian (label) and English and French (message). The other
-  languages keep the original art.
+- **Wording in other languages:** the TWO PLAYERS / ONE PLAYER buttons are English in every language
+  (built from the English labels); "QUIT BATTLE ?" is built for English and French, the other languages
+  keep the original message art.
 - **Shared effects:** an object far from both players (off both screens) has no viewport; its
   shake / fade is dropped.
+- **Vs CPU lines (host results, `vs/test/test_cpu`, seed 4).** With complete lines (zones 1..3, 5, Night
+  Carnival act 1 Sonic: 18 of 28 stage / character pairs) the CPU finishes undisturbed in the line's
+  time (1:30 .. 3:13). Upsets (items, knock-backs) are handled on Leaf Storm (10 of 10 seeds with two
+  upsets, z11 Sonic) and partly elsewhere; on most stages one upset can send it into pits again and
+  again (it does not reach the goal in many of those runs). No complete line was found for Night
+  Carnival act 1 (Blaze), Night Carnival act 2, Altitude Limit, Huge Crisis and Dead Line (both acts):
+  there the CPU drives a partial line (from the start to the furthest place the search reached), then
+  follows the rival's path (where the human has been 2 s or more before), so it trails the human there.
+  The line search is long (50 min for the 28 pairs on two cores, most of it on those stages).
+- **Vs CPU variation:** the race seed varies only the easy skill's boost choices and the rival
+  interplay: the stages' objects run on the race clock, so a CPU that starts or moves at another time
+  meets them differently (a reaction delay at GO broke the lines and was removed).
 - **Not tested on hardware.** Flycast runs used one keyboard and a scripted pad for player 2.
   Two physical controllers in Flycast were not tested.

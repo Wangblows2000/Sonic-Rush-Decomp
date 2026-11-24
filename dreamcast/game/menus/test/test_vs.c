@@ -1,7 +1,7 @@
 /* Host test of Battle Play (local two-controller VS) in the front end: title menu VS page ->
  * both players' character select (mn_psel.c modes 1 / 2) -> TimeSelect stage select
  * (mn_timeselect.c) -> MENU_REQ_VS_STAGE; menus_vs_exit -> ResultsScreen (mn_results.c) ->
- * rematch / character select / quit. Two pads: player 1 through menus_run_frame, player 2
+ * rematch / character select / quit; the Vs CPU mode (ONE PLAYER) with player 2's pad ignored. Two pads: player 1 through menus_run_frame, player 2
  * through menus_set_pad2. With a dump directory, writes the 640x480 compositions as PPM
  * (MN_DUMP_ENGINES=1: each DS engine alone too).
  * Usage: test_vs <build/dreamcast/menus> <build/dreamcast/sprites/bac> [dumpdir] */
@@ -164,7 +164,48 @@ static int engine_quads(int engine) {
     return k;
 }
 
-/* title menu -> VS page -> wireless sub-page -> host: Battle Play's character select */
+/* the VS page's buttons (engine 1, mnu_titl_eng): two 128-px buttons drawn as pieces of several images
+ * (the spelled labels TWO PLAYERS / ONE PLAYER), each with its frame from item 0xd's image */
+static int check_vs_buttons(const char *tag) {
+    const MnQuad *q;
+    int n = mn_quads(&q), k, b, ok = 1, ys[2] = { -1, -1 }, np[2] = { 0, 0 }, nimg[2] = { 0, 0 };
+    int x0[2] = { 1 << 20, 1 << 20 }, x1[2] = { -(1 << 20), -(1 << 20) }, img[2][8];
+    for (k = 0; k < n; k++) {
+        if (!q[k].res || strcmp(q[k].res->id, "act__mnu_titl_eng") != 0 || q[k].engine != 1 || q[k].h != 24)
+            continue;
+        for (b = 0; b < 2 && ys[b] >= 0 && ys[b] != (int)q[k].y; b++)
+            ;
+        if (b == 2)
+            continue;
+        ys[b] = (int)q[k].y;
+        np[b]++;
+        x0[b] = (int)q[k].x < x0[b] ? (int)q[k].x : x0[b];
+        x1[b] = (int)(q[k].x + q[k].w) > x1[b] ? (int)(q[k].x + q[k].w) : x1[b];
+        {
+            int j;
+            for (j = 0; j < nimg[b] && img[b][j] != q[k].image; j++)
+                ;
+            if (j == nimg[b] && nimg[b] < 8)
+                img[b][nimg[b]++] = q[k].image;
+        }
+    }
+    for (b = 0; b < 2; b++) {
+        printf("%s button %d: %d pieces from %d images, x %d..%d\n", tag, b, np[b], nimg[b], x0[b], x1[b]);
+        ok &= np[b] >= 12 && nimg[b] >= 3 && x1[b] - x0[b] == 128;
+    }
+    return ok;
+}
+/* the "CPU" tag of player 2's select column: the font8 strip on engine 2 */
+static int cpu_tag_quads(void) {
+    const MnQuad *q;
+    int n = mn_quads(&q), i, k = 0;
+    for (i = 0; i < n; i++)
+        if (q[i].kind == MNQ_BG && q[i].engine == MN_ENGINE_P2 && q[i].bg && strcmp(q[i].bg->name, "vs_names") == 0)
+            k++;
+    return k;
+}
+
+/* title menu -> VS page -> TWO PLAYERS: Battle Play's character select */
 static void test_title_to_vs(void) {
     int i;
     Task_DestroyAll();
@@ -179,30 +220,20 @@ static void test_title_to_vs(void) {
     run(90);
     dump("vs01_title_vs_page");
     CHECK(scene_is("TitleMenu"));
-    /* one button, the wireless label relabelled BATTLE: drawn as pieces (frame, fill, word, frame) of
-     * one 128-px image, no DOWNLOAD button */
-    {
-        const MnQuad *q;
-        int n = mn_quads(&q), k, np = 0, x0 = 1 << 20, x1 = -(1 << 20), img = -1, one = 1;
-        for (k = 0; k < n; k++)
-            if (q[k].res && strcmp(q[k].res->id, "act__mnu_titl_eng") == 0 && q[k].engine == 1) {
-                np++;
-                if (img < 0)
-                    img = q[k].image;
-                one &= q[k].image == img;
-                x0 = (int)q[k].x < x0 ? (int)q[k].x : x0;
-                x1 = (int)(q[k].x + q[k].w) > x1 ? (int)(q[k].x + q[k].w) : x1;
-            }
-        printf("VS page button: %d pieces, x %d..%d\n", np, x0, x1);
-        CHECK(np >= 5 && one && x1 - x0 == 128);
-    }
-    tap1(IN_DOWN);   /* only one item: stays */
+    /* two buttons, TWO PLAYERS and ONE PLAYER, spelled from letters of several English labels */
+    CHECK(check_vs_buttons("vs page"));
+    tap1(IN_DOWN);   /* ONE PLAYER */
     run(10);
-    tap1(IN_JUMP);   /* BATTLE: straight to the select */
+    tap1(IN_UP);     /* TWO PLAYERS */
+    run(10);
+    menus_vs_set_cpu(1);   /* TWO PLAYERS resets the mode */
+    tap1(IN_JUMP);   /* straight to the select */
     i = run_until_scene("PlayerSelectVs", 200);
     CHECK(i >= 0);
     CHECK(gGameState.unk10 == MENU_MODE_VS);
     CHECK((gGameState.unk18 & 0x30) == 0x20);
+    CHECK(mn_vs_cpu() == 0);
+    CHECK(cpu_tag_quads() == 0);
 }
 
 static void test_player_select(void) {
@@ -340,6 +371,7 @@ static void check_vs_request(MenuRequest r, int zone, int act) {
     CHECK(r.zone == zone && r.act == act);
     CHECK(r.character == 0 && r.character2 == 1);
     CHECK(r.mode == MENU_MODE_VS);
+    CHECK(r.cpu == 0);
 }
 
 static MenuRequest results(int winner, const char *name) {
@@ -542,6 +574,180 @@ static void test_prepare(void) {
     CHECK(i >= 0 && r.kind == MENU_REQ_NONE);
 }
 
+/* Vs CPU: title menu ONE PLAYER -> player 1 picks, the CPU takes the other character by itself ->
+ * player 1 alone picks the stage, the CPU is ready at once -> MENU_REQ_VS_STAGE with cpu = 1 -> results
+ * (player 1 only) -> TRY AGAIN keeps cpu = 1 -> CHANGE CHARACTER/ACT keeps the mode -> QUIT. Player 2's
+ * pad holds buttons all the time: it must change nothing. */
+static void test_cpu_flow(void) {
+    MenuRequest r;
+    const u16 *nm;
+    int i, c1 = -1, c2 = -1, t0;
+    u8 tot1 = gSaveData.unk1D0[1];
+    Task_DestroyAll();
+    mn_display_reset();
+    BRIGHT_MAIN = BRIGHT_SUB = 0;
+    menus_vs_set_cpu(0);
+    TitleMenu_Start();
+    run(90);
+    tap1(IN_DOWN);   /* GAME START -> VS */
+    run(30);
+    tap1(IN_JUMP);   /* VS page */
+    run(90);
+    tap1(IN_DOWN);   /* ONE PLAYER */
+    run(10);
+    CHECK(check_vs_buttons("vs cpu page"));
+    dump("vs40_title_vs_cpu_item");
+    tap1(IN_JUMP);
+    i = run_until_scene("PlayerSelectVs", 200);
+    CHECK(i >= 0 && mn_vs_cpu() == 1);
+    CHECK(gGameState.unk10 == MENU_MODE_VS && (gGameState.unk18 & 0x30) == 0x20);
+    CHECK(mn_vs_player_name(1, &nm) == -3 && nm[0] == 'C' && nm[1] == 'P' && nm[2] == 'U');
+    /* player 2's pad is not read: RIGHT / A on it do nothing */
+    for (i = 0; i < 400 && !(PlayerSelectMenu_VsState(0, NULL) == 0 && PlayerSelectMenu_VsState(1, NULL) == 0); i++)
+        run2(1, 0, IN_JUMP | IN_RIGHT, 0);
+    CHECK(i < 400);
+    run2(40, 0, IN_RIGHT, 1);
+    run2(40, 0, IN_JUMP, 1);
+    CHECK(PlayerSelectMenu_VsState(1, &c2) == 0 && c2 == 1);   /* the CPU waits on Blaze */
+    CHECK(cpu_tag_quads() == 1);
+    dump("vs41_cpu_psel");
+    /* player 1 takes Blaze: the CPU moves off it to Sonic and decides by itself */
+    tap1(IN_RIGHT);
+    run(40);
+    CHECK(PlayerSelectMenu_VsState(0, &c1) == 0 && c1 == 1);
+    tap1(IN_JUMP);
+    run(4);
+    CHECK(PlayerSelectMenu_VsState(0, NULL) == 1);
+    for (i = 0; i < 120 && PlayerSelectMenu_VsState(1, NULL) != 1; i++)
+        run2(1, 0, IN_TRICK, 0);
+    CHECK(i < 120 && PlayerSelectMenu_VsState(1, &c2) == 1 && c2 == 0);
+    dump("vs42_cpu_psel_both");
+    i = run_until_scene("TimeSelect", 400);
+    CHECK(i > 150);
+    CHECK(gGameState.unk4 == 1 && gGameState.unk8 == 0);
+    /* the stage select: player 1 alone; player 2's plate says CPU; the CPU is ready at once */
+    CHECK(run_until_ts(2, 300) >= 0);
+    run(10);
+    dump("vs43_cpu_timeselect");
+    tap1(IN_RIGHT);
+    run(30);
+    CHECK(TimeSelectMenu_Selected() == 1);
+    run2(30, 0, IN_RIGHT, 1);
+    CHECK(TimeSelectMenu_Selected() == 1);
+    tap1(IN_JUMP);
+    CHECK(run_until_ts(4, 120) >= 0);
+    t0 = 0;
+    r = tap1(IN_JUMP);
+    for (; t0 < 60 && r.kind == MENU_REQ_NONE; t0++)
+        r = run(1);
+    CHECK(t0 < 40);   /* no 200-frame wait for player 2 */
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 0 && r.act == 1 && r.character == 1 && r.character2 == 0);
+    CHECK(r.cpu == 1 && r.mode == MENU_MODE_VS);
+    printf("Vs CPU request: kind %d zone %d act %d character %d/%d cpu %d\n", (int)r.kind, r.zone, r.act,
+           r.character, r.character2, r.cpu);
+    /* results: the CPU won; player 2's pad cannot choose; TRY AGAIN keeps the mode */
+    results(1, "c_cpu_wins");
+    CHECK(count_res("act__mnu_conf_result_eng", 0) == 2);
+    run2(3, 0, IN_DOWN, 1);
+    CHECK(ResultsScreen_Choice() == 0);
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.cpu == 1 && r.zone == 0 && r.act == 1 && r.character == 1 &&
+          r.character2 == 0);
+    /* the VS record: a loss against "CPU" (its own opponent entry, MAC ff:..:ff) */
+    CHECK(gSaveData.unk1D0[1] == (u8)(tot1 + 1));
+    CHECK(gSaveData.unk1D4[0].len == 3 && gSaveData.unk1D4[0].name[0] == 'C' && gSaveData.unk1D4[0].name[2] == 'U');
+    CHECK(gSaveData.unk1D4[0].mac[0] == 0xff && gSaveData.unk1D4[0].cnt[1] >= 1);
+    /* CHANGE CHARACTER/ACT: back to the select in Vs CPU */
+    results(0, "d_cpu_change");
+    tap1(IN_DOWN);
+    run(3);
+    tap1(IN_JUMP);
+    CHECK(run_until_scene("PlayerSelectVs", 120) >= 0);
+    CHECK(mn_vs_cpu() == 1);
+    CHECK(run_until_psel(0, 0, 400) >= 0);
+    CHECK(cpu_tag_quads() == 1);
+    /* player 1 decides Sonic: the CPU keeps Blaze and decides 0x20 frames later; player 1's B in
+     * between takes the choice back, the CPU waits again */
+    tap1(IN_JUMP);
+    run(8);
+    CHECK(PlayerSelectMenu_VsState(0, NULL) == 1 && PlayerSelectMenu_VsState(1, NULL) == 0);
+    tap1(IN_TRICK);
+    run(60);
+    CHECK(PlayerSelectMenu_VsState(0, NULL) == 0 && PlayerSelectMenu_VsState(1, NULL) == 0);
+    tap1(IN_JUMP);
+    run(0x30);
+    CHECK(PlayerSelectMenu_VsState(0, &c1) == 1 && c1 == 0);
+    CHECK(PlayerSelectMenu_VsState(1, &c2) == 1 && c2 == 1);
+    CHECK(run_until_scene("TimeSelect", 400) >= 0);
+    CHECK(run_until_ts(2, 300) >= 0);
+    tap1(IN_JUMP);
+    CHECK(run_until_ts(4, 120) >= 0);
+    r = wait_req(tap1(IN_JUMP), 60);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.cpu == 1 && r.zone == 0 && r.act == 0 && r.character == 0 &&
+          r.character2 == 1);
+    /* QUIT -> YES -> the title screen */
+    results(2, "e_cpu_quit");
+    tap1(IN_UP);
+    run(3);
+    tap1(IN_JUMP);
+    run(0x10 + 0xa + 20);
+    tap1(IN_LEFT);
+    run(3);
+    r = tap1(IN_JUMP);
+    CHECK(run_until_scene("TitleScreen", 200) >= 0 && r.kind == MENU_REQ_NONE);
+}
+
+/* every language: the VS page's two buttons are the English spelled labels (mnu_titl_eng.bac loaded
+ * beside the language's own bank); ONE PLAYER still starts Vs CPU */
+static void test_vs_page_languages(void) {
+    int lang;
+    char tag[32];
+    for (lang = 0; lang < 6; lang++) {
+        menus_set_language(lang);
+        Task_DestroyAll();
+        mn_display_reset();
+        BRIGHT_MAIN = BRIGHT_SUB = 0;
+        menus_vs_set_cpu(0);
+        TitleMenu_Start();
+        run(90);
+        tap1(IN_DOWN);
+        run(30);
+        tap1(IN_JUMP);
+        run(90);
+        tap1(IN_DOWN);
+        run(10);
+        snprintf(tag, sizeof(tag), "lang %d", lang);
+        CHECK(check_vs_buttons(tag));
+        snprintf(tag, sizeof(tag), "vs45_vs_page_lang%d", lang);
+        dump(tag);
+        tap1(IN_JUMP);
+        CHECK(run_until_scene("PlayerSelectVs", 200) >= 0 && mn_vs_cpu() == 1);
+    }
+    menus_set_language(1);
+    Task_DestroyAll();
+    mn_display_reset();
+}
+
+/* main.c's debug start in Vs CPU: menus_vs_set_cpu(1) + menus_vs_prepare; TRY AGAIN keeps cpu = 1,
+ * menus_vs_set_cpu(0) gives the two-player mode again */
+static void test_cpu_prepare(void) {
+    MenuRequest r;
+    Task_DestroyAll();
+    mn_display_reset();
+    menus_vs_set_cpu(1);
+    menus_vs_prepare(1, 0, 0, 0);
+    CHECK(mn_vs_cpu() == 1 && gGameState.unk4 == 0 && gGameState.unk8 == 1);
+    results(0, "f_cpu_prepared");
+    dump("vs44_cpu_results");
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.cpu == 1 && r.zone == 1 && r.act == 0 && r.character == 0 &&
+          r.character2 == 1);
+    menus_vs_set_cpu(0);
+    results(0, "g_two_players_again");
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.cpu == 0 && r.zone == 1 && r.act == 0);
+}
+
 /* player 2's column of the select: its portrait (sub BG0 of engine 3) and banner (sub BG2, the
  * "please select" sprite) are drawn, with player 2 idle and with a scripted pad (RIGHT on frames
  * 0-3 of every 60, A on 30-33) */
@@ -640,6 +846,9 @@ int main(int argc, char **argv) {
     test_results();
     test_time_select_back_and_timeout();
     test_prepare();
+    test_cpu_flow();
+    test_cpu_prepare();
+    test_vs_page_languages();
     printf("vs host test: %d/%d checks passed\n", checks - fails, checks);
     return fails ? 1 : 0;
 }

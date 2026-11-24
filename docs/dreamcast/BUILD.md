@@ -133,8 +133,18 @@ behaves as the release game.
 Battle Play (two players, split screen) uses `SRDC_DEBUGDIR` files: `vs.txt`
 starts a race directly, `vs_p2.txt` scripts player 2's pad (or both) for
 one-keyboard emulator runs. See [BATTLE-PLAY.md](BATTLE-PLAY.md#test-builds).
-The kits need no change for it: Battle Play is in the same `1ST_READ.BIN`, and
-its menu and sound files are converted from the ROM with the rest of the disc.
+Battle Play is in the same `1ST_READ.BIN`, and its menu and sound files are
+converted from the ROM with the rest of the disc.
+
+**Vs CPU racing lines.** `build_disc.sh` (through `assemble_disc.py`) makes the
+CPU's racing lines for the 14 Battle Play stages and both characters with
+`make -C dreamcast/game/vs -jN routes` (the Windows kit: `vs_route.exe`, one job
+per core) and puts them in `/cd/vs`. This is a search with the real game
+simulation on your converted stages: allow a few minutes per stage and
+character on one core; the lines are kept in `build/dreamcast/vs/routes` and
+only missing ones are made again. `SRDC_ROUTES=copy` skips the search (test
+discs: only the lines already there). Without a stage's line the CPU follows
+the rival's path there.
 
 `/cd/debug/frameprof.txt` (via `SRDC_DEBUGDIR`) turns on the frame profiler:
 per-second frame time, vblank counts and the worst frame on the serial

@@ -47,6 +47,12 @@ typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sp
     s16 g3EC, g3EE;                    /* @0x3EC @0x3EE (GmkTable: camera look offsets) */
     s32 g3F0, g3F4, g3F8, g3FC;        /* @0x3F0..@0x3FC */
     s16 g3D2, g3D4;                    /* @0x3D2 @0x3D4 (objdata v4: cleared by Player_Action_ResumeGlider) */
+    /* native, Battle Play: the player's own water level (gCamera.unk62 / flags 0x1000000, 0x2000000). On the
+     * DS each console kept its own gCamera; here the objects run once with player 1's camera, so the water
+     * triggers also keep a level per player (obj_water_of) */
+    u16 water;
+    u8 water_set;
+    u32 water_flags;
 } ObjPlayerCtx;
 
 typedef struct ObjGlobals {
@@ -161,6 +167,11 @@ ObjCreateFn obj_create_fn(u16 type);                                    /* gMapO
 
 /* player helpers (obj_player.c) */
 ObjPlayerCtx *obj_player_ctx(const DcPlayer *p);
+/* Battle Play (native): the water level that applies to player p (its own level once a water trigger
+ * set it, else the camera's), and the per-player update the water triggers make */
+int obj_vs_split_water(void);
+u16 obj_water_of(const DcPlayer *p);
+void obj_water_set_player(int k, u16 level, int on, int flag2);
 DcPlayer *obj_box_player(const ObjBox *b);                              /* owner if it is a player */
 void obj_player_install_hooks(void);
 void obj_player_collide(ObjPlayerCtx *pc);                              /* Player_Collide + sprite timing */

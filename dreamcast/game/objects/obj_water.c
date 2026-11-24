@@ -430,7 +430,7 @@ void EffWaterSplash_Spawn(DcPlayer *p) {
         return;
     if (W.zone >= 9 || W.act >= 2)
         return; /* EffSplash3D_Spawn (boss arenas): not translated */
-    EffWaterSplash_Create(p, 0, 0, CAM0.water);
+    EffWaterSplash_Create(p, 0, 0, obj_water_of(p));
 }
 
 /* ============================================================ objects */

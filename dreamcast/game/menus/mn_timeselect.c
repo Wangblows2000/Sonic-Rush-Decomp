@@ -9,7 +9,8 @@
  *
  * One Dreamcast: player 1's chooser screen is the screen of both. Player 2's side of the records
  * (the follower's TimeSelectMenu_State_Sync handshake and unlock mask, its A in
- * TimeSelectMenu_State_FollowerReady) is TimeSelectMenu_LocalGuest_Main on gPad2.
+ * TimeSelectMenu_State_FollowerReady) is TimeSelectMenu_LocalGuest_Main on gPad2. Vs CPU: player 1 alone
+ * chooses (as in the two-player mode) and the CPU is ready at once; its plate's name is "CPU".
  *
  * DS display (TimeSelectMenu_InitDisplay: POWCNT swap, the main engine is the top screen):
  *   main (top): BG0 3D (the two characters' models, DrawModelA / B), BG1 mnu_conf_base02, BG2
@@ -737,8 +738,8 @@ static void TimeSelectMenu_LocalGuest_Main(void) {
         return;
     }
     if (host->func == TimeSelectMenu_State_ChooserReady) {
-        /* TimeSelectMenu_State_FollowerReady */
-        if (gPad2.trg & PAD_A)
+        /* TimeSelectMenu_State_FollowerReady (Vs CPU: the computer is ready at once, player 1's A starts) */
+        if ((gPad2.trg & PAD_A) || mn_vs_cpu())
             a[3] = 1;
         return;
     }

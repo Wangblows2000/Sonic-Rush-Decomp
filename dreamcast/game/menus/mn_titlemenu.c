@@ -11,6 +11,8 @@
  * (VsMenu, VsConnect) have no counterpart, the item goes on as the lobby's
  * host exit does (gTitleMenuExitTable[2] TitleMenu_StartVsHost ->
  * PlayerSelectMenu_StartVs), fading to white like the select that follows.
+ * The VS page's two buttons are TWO PLAYERS and ONE PLAYER (Vs CPU), spelled
+ * from the original English labels (TitleMenu_DrawVsButton).
  */
 #include <stdlib.h>
 #include "mn_internal.h"
@@ -30,6 +32,7 @@ typedef struct TitleMenuWork {
     s32 ids[19];          /* +0x7b4 */
     u16 pal[3];           /* +0x800 */
     MnRes *res808, *res80c;
+    MnRes *res_vs;           /* Battle Play's buttons (items 0xd / 0xe): mnu_titl_eng.bac (res80c in English) */
     void *res824, *res828;   /* mnu_wipe.ama, mnu_button.ama */
 } TitleMenuWork;
 
@@ -331,19 +334,33 @@ static void TitleMenu_DrawBackButton(s32 x, s32 y, s32 mode, u32 t) {
     AnimatorSprite_Draw(s);
 }
 
-/* Battle Play's button (item 0xd): the original "DS WIRELESS BATTLE" label image with only its
- * "BATTLE" word, centred. The word is found from the label's text columns (columns that differ
- * from the button's background, a 2-pixel dither: the reference columns 6 / 7); the background
- * between the frame (8 px each side) and the word is filled from the longest background run.
- * The word kept per language: eng 3 words -> 3rd, fra 4 -> 1st ("COMBAT"), deu 2 -> 2nd ("KAMPF"),
- * ita 2 -> 1st ("BATTAGLIA"); any other layout (jpn, spa) keeps the whole original label. */
-#define TM_BTN_MAXP 24
+/* Battle Play's two buttons, the original VS page's items 0xd / 0xe (DS WIRELESS BATTLE / DS DOWNLOAD
+ * BATTLE) relabelled TWO PLAYERS (two controllers) and ONE PLAYER (Vs CPU). The labels are spelled at
+ * run time with letters cut from the English button labels of mnu_titl_eng.bac (the button font of the
+ * disc has no digits, no V and no U: "2 PLAYERS" / "VS CPU" cannot be built). Each source label is split
+ * into words at the columns equal to the button's background (a 2-pixel dither: the reference columns
+ * 6 / 7) and each word into letters at the columns holding only background, halo or outline (the
+ * colours of the word's first two columns); a letter is its fill columns and one outline column on each
+ * side. A label must give the letter counts of its known text, else it is not used. The button (frame,
+ * background) is the same state's image of item 0xd; the letters come from the same state's images
+ * (normal, selected, the flashing frames of the confirm) of the other items, laid out with the font's
+ * spacing (word space as in BATTLE PLAY) and moved by even columns only (the dither's phase), centred.
+ * Every language shows the English words (other languages load mnu_titl_eng.bac for these two buttons);
+ * if a letter is missing the original label is drawn. */
+#define TM_LBL_MAXP 48
+#define TM_LBL_CACHE 12
 typedef struct {
     const MnRes *res;
-    int image, n;
-    MnSprPiece p[TM_BTN_MAXP];
-} TmBattleLabel;
-static TmBattleLabel s_tm_battle[4];
+    int lbl, anim, frame, n;
+    MnImgPiece p[TM_LBL_MAXP];
+} TmVsLabel;
+static TmVsLabel s_tm_lbl[TM_LBL_CACHE];
+static int s_tm_lbl_next;
+static const char *const s_tm_vs_text[2] = { "TWO PLAYERS", "ONE PLAYER" };
+static const struct { s8 item; const char *text; } s_tm_glyph_src[7] = {
+    { 9, "GAMEPLAY" }, { 10, "BATTLE PLAY" }, { 11, "TIME ATTACK" }, { 12, "OPTIONS" },
+    { 15, "ACT" },     { 16, "BOSS" },        { 13, "DS WIRELESS BATTLE" },
+};
 static int tm_col_is_bg(const MnRes *r, int img, int x, int h) {
     int y, ref = 6 + (x & 1);
     for (y = 0; y < h; y++)
@@ -351,35 +368,142 @@ static int tm_col_is_bg(const MnRes *r, int img, int x, int h) {
             return 0;
     return 1;
 }
-static int tm_battle_pieces(TmBattleLabel *L, const MnRes *r, int img) {
-    static const struct { int lang, words, keep; } rule[4] = { { 1, 3, 2 }, { 2, 4, 0 }, { 3, 2, 1 }, { 4, 2, 0 } };
-    const MnImage *im = &r->images[img];
-    int w = im->w, h = im->h, x, k, nseg = 0, seg[8][2], keep = -1, tx, cs = -1, cl = 0, a, b, side;
-    L->res = r;
-    L->image = img;
-    L->n = 0;
-    if (w < 32 || mn_image_texel(r, img, 6, 0) < 0)
+/* the image of item `item`'s button in the state (offset 0..2 of its three animations) and frame */
+static int tm_item_image(const MnRes *r, int item, int state, int frame) {
+    const MnAnimDef *a;
+    int an = 7 + (item - 9) * 3 + state;
+    if (an >= r->n_anims)
+        return -1;
+    a = &r->anims[an];
+    if (a->count == 0)
+        return -1;
+    return r->frames[a->first + (frame < a->count ? frame : a->count - 1)].image;
+}
+/* words (columns [ws, we)) of a label image between its frames; 0 when not a plain button */
+static int tm_words(const MnRes *r, int img, int seg[][2], int max) {
+    int w, h, x, n = 0;
+    if (img < 0 || img >= r->n_images || mn_image_texel(r, img, 6, 0) < 0)
         return 0;
-    for (x = 8; x < w - 6;) {   /* text segments between the frames */
+    w = r->images[img].w;
+    h = r->images[img].h;
+    if (w < 32)
+        return 0;
+    for (x = 8; x < w - 6;) {
         if (tm_col_is_bg(r, img, x, h)) {
             x++;
             continue;
         }
-        if (nseg == 8)
+        if (n == max)
             return 0;
-        seg[nseg][0] = x;
+        seg[n][0] = x;
         while (x < w - 6 && !tm_col_is_bg(r, img, x, h))
             x++;
-        seg[nseg++][1] = x;
+        seg[n++][1] = x;
     }
-    for (k = 0; k < 4; k++)
-        if (rule[k].lang == mn_lang() && rule[k].words == nseg)
-            keep = rule[k].keep;
-    if (keep < 0)
+    return n;
+}
+/* a column of a word with no letter fill: background, or the outline / halo colours o[0..no) */
+static int tm_col_is_gap(const MnRes *r, int img, int x, int h, const int *o, int no) {
+    int y, k, ref = 6 + (x & 1);
+    for (y = 0; y < h; y++) {
+        int t = mn_image_texel(r, img, x, y);
+        if (t == mn_image_texel(r, img, ref, y))
+            continue;
+        for (k = 0; k < no && o[k] != t; k++)
+            ;
+        if (k == no)
+            return 0;
+    }
+    return 1;
+}
+typedef struct { s16 image, x0, x1; } TmGlyph;
+/* the letters of the source labels in one button state: glyph[c - 'A'], and the word space */
+static void tm_glyphs(const MnRes *r, int state, int frame, TmGlyph *glyph, int *space) {
+    int k;
+    memset(glyph, 0, sizeof(TmGlyph) * 26);
+    *space = 6;
+    for (k = 0; k < 7; k++) {
+        const char *t = s_tm_glyph_src[k].text;
+        int img = tm_item_image(r, s_tm_glyph_src[k].item, state, frame);
+        int seg[8][2], nw = tm_words(r, img, seg, 8), o[8], no = 0, i, x, y, h, wi, nl;
+        TmGlyph got[24];
+        const char *c;
+        if (nw <= 0)
+            continue;
+        h = r->images[img].h;
+        for (x = seg[0][0]; x < seg[0][0] + 2; x++)   /* the outline and halo colours */
+            for (y = 0; y < h; y++) {
+                int tx = mn_image_texel(r, img, x, y), ref = mn_image_texel(r, img, 6 + (x & 1), y);
+                if (tx == ref)
+                    continue;
+                for (i = 0; i < no && o[i] != tx; i++)
+                    ;
+                if (i == no && no < 8)
+                    o[no++] = tx;
+            }
+        nl = 0;
+        c = t;
+        for (wi = 0; wi < nw; wi++) {
+            int wl = 0;
+            for (x = seg[wi][0]; x < seg[wi][1];) {
+                int s0;
+                if (tm_col_is_gap(r, img, x, h, o, no)) {
+                    x++;
+                    continue;
+                }
+                s0 = x;
+                while (x < seg[wi][1] && !tm_col_is_gap(r, img, x, h, o, no))
+                    x++;
+                if (nl < 24) {
+                    got[nl].image = (s16)img;
+                    got[nl].x0 = (s16)(s0 - 1);
+                    got[nl].x1 = (s16)(x + 1);
+                }
+                nl++;
+                wl++;
+            }
+            while (*c == ' ')   /* the text's word must have as many letters */
+                c++;
+            for (i = 0; c[i] && c[i] != ' '; i++)
+                ;
+            if (i != wl)
+                break;
+            c += i;
+        }
+        while (*c == ' ')
+            c++;
+        if (wi != nw || *c || nl > 24)
+            continue;
+        if (nw >= 2 && k == 1)   /* BATTLE PLAY: the font's word space */
+            *space = got[6].x0 - got[5].x1;
+        for (i = 0, c = t; *c; c++) {
+            if (*c == ' ')
+                continue;
+            if (*c >= 'A' && *c <= 'Z' && glyph[*c - 'A'].x1 == 0)
+                glyph[*c - 'A'] = got[i];
+            i++;
+        }
+    }
+}
+/* the pieces of label `lbl` for the button sprite's state: frame left, background, letters, frame right */
+static int tm_vs_label_build(TmVsLabel *L, const MnRes *r, int lbl, int state, int frame) {
+    TmGlyph g[26];
+    int space, base = tm_item_image(r, 13, state, frame), seg[8][2], nw, w, h, cs = -1, cl = 0, side, a, b;
+    int pass, x, e, tx = 0, tw = 0;
+    const char *c;
+    L->n = 0;
+    nw = tm_words(r, base, seg, 8);
+    if (nw <= 0)
         return 0;
+    w = r->images[base].w;
+    h = r->images[base].h;
+    tm_glyphs(r, state, frame, g, &space);
+    for (c = s_tm_vs_text[lbl]; *c; c++)
+        if (*c != ' ' && (*c < 'A' || *c > 'Z' || g[*c - 'A'].x1 == 0))
+            return 0;
     /* the longest background run (even start / length) left of the first or right of the last word */
     for (side = 0; side < 2; side++) {
-        a = side ? seg[nseg - 1][1] : 6;
+        a = side ? seg[nw - 1][1] : 6;
         b = side ? w - 6 : seg[0][0];
         if ((a & 1) != 0)
             a++;
@@ -390,14 +514,11 @@ static int tm_battle_pieces(TmBattleLabel *L, const MnRes *r, int img) {
     }
     if (cl < 2)
         return 0;
-    tx = (w - (seg[keep][1] - seg[keep][0])) / 2;
-    if ((tx & 1) != (seg[keep][0] & 1))
-        tx++;
-    /* frame left, fill, word, fill, frame right */
-#define TM_PIECE(SX, W, DX)                                                                    \
+#define TM_LPIECE(IMG, SX, W, DX)                                                              \
     do {                                                                                       \
-        if (L->n < TM_BTN_MAXP) {                                                              \
-            MnSprPiece *q_ = &L->p[L->n++];                                                    \
+        if (L->n < TM_LBL_MAXP) {                                                              \
+            MnImgPiece *q_ = &L->p[L->n++];                                                    \
+            q_->image = (s16)(IMG);                                                            \
             q_->sx = (s16)(SX);                                                                \
             q_->sy = 0;                                                                        \
             q_->w = (s16)(W);                                                                  \
@@ -406,42 +527,79 @@ static int tm_battle_pieces(TmBattleLabel *L, const MnRes *r, int img) {
             q_->dy = 0;                                                                        \
         }                                                                                      \
     } while (0)
-    TM_PIECE(0, 8, 0);
-    for (side = 0; side < 2; side++) {
-        a = side ? tx + (seg[keep][1] - seg[keep][0]) : 8;
-        b = side ? w - 8 : tx;
-        if ((a & 1) != 0 && a < b) {   /* keep the dither's phase */
-            TM_PIECE(cs + 1, 1, a);
-            a++;
+/* background columns [A, B) (the dither's phase kept) */
+#define TM_FILL(A, B)                                                                          \
+    do {                                                                                       \
+        int a_ = (A), b_ = (B);                                                                \
+        if ((a_ & 1) != 0 && a_ < b_) {                                                        \
+            TM_LPIECE(base, cs + 1, 1, a_);                                                    \
+            a_++;                                                                              \
+        }                                                                                      \
+        while (a_ < b_) {                                                                      \
+            int n_ = b_ - a_ < cl ? b_ - a_ : cl;                                              \
+            TM_LPIECE(base, cs, n_, a_);                                                       \
+            a_ += n_;                                                                          \
+        }                                                                                      \
+    } while (0)
+    /* pass 0 measures the text from column 0, pass 1 lays it out centred */
+    for (pass = 0; pass < 2; pass++) {
+        x = pass ? tx : 0;
+        e = 8;   /* the end of the last piece */
+        if (pass)
+            TM_LPIECE(base, 0, 8, 0);
+        for (c = s_tm_vs_text[lbl]; *c; c++) {
+            const TmGlyph *q;
+            int nx;
+            if (*c == ' ') {
+                x += space;
+                continue;
+            }
+            q = &g[*c - 'A'];
+            nx = x;
+            if (((nx - q->x0) & 1) != 0)   /* moved by an even number of columns */
+                nx++;
+            if (pass) {
+                TM_FILL(e, nx);
+                TM_LPIECE(q->image, q->x0, q->x1 - q->x0, nx);
+            }
+            x = e = nx + q->x1 - q->x0;
         }
-        while (a < b) {
-            int n = b - a < cl ? b - a : cl;
-            TM_PIECE(cs, n, a);
-            a += n;
+        if (!pass) {
+            tw = x;
+            tx = (w - tw) / 2;
+            if (tx < 8 || tw > w - 16)
+                return L->n = 0;
+        } else {
+            if (x > w - 8)
+                return L->n = 0;
+            TM_FILL(x, w - 8);
+            TM_LPIECE(base, w - 8, 8, w - 8);
         }
     }
-    TM_PIECE(seg[keep][0], seg[keep][1] - seg[keep][0], tx);
-    TM_PIECE(w - 8, 8, w - 8);
-#undef TM_PIECE
-    return L->n;
+#undef TM_FILL
+#undef TM_LPIECE
+    return L->n < TM_LBL_MAXP ? L->n : (L->n = 0);
 }
-static void TitleMenu_DrawBattleButton(MnSpr *s) {
-    TmBattleLabel *L = NULL;
-    int img, k;
-    if (!AnimatorSprite_CurImage(s, &img)) {
-        AnimatorSprite_Draw(s);
-        return;
-    }
-    for (k = 0; k < 4 && !L; k++)
-        if (s_tm_battle[k].res == s->res && s_tm_battle[k].image == img)
-            L = &s_tm_battle[k];
-    if (!L) {   /* the three images of the button (normal, selected, pressed) are cached */
-        static int next;
-        L = &s_tm_battle[next++ & 3];
-        tm_battle_pieces(L, s->res, img);
+static void TitleMenu_DrawVsButton(MnSpr *s, int lbl) {
+    TmVsLabel *L = NULL;
+    int k, state = (s->anim - 7) % 3;
+    for (k = 0; k < TM_LBL_CACHE && !L; k++)
+        if (s_tm_lbl[k].res == s->res && s_tm_lbl[k].lbl == lbl && s_tm_lbl[k].anim == s->anim &&
+            s_tm_lbl[k].frame == s->frame)
+            L = &s_tm_lbl[k];
+    if (!L) {   /* each button's states and frames are cached */
+        L = &s_tm_lbl[s_tm_lbl_next++ % TM_LBL_CACHE];
+        L->res = s->res;
+        L->lbl = lbl;
+        L->anim = s->anim;
+        L->frame = s->frame;
+        if (s->res && s->anim >= 7 && strcmp(s->res->id, "act__mnu_titl_eng") == 0)
+            tm_vs_label_build(L, s->res, lbl, state, s->frame);
+        else
+            L->n = 0;
     }
     if (L->n > 0)
-        AnimatorSprite_DrawPieces(s, L->p, L->n);
+        AnimatorSprite_DrawImagePieces(s, L->p, L->n);
     else
         AnimatorSprite_Draw(s);
 }
@@ -501,8 +659,8 @@ static void TitleMenu_DrawItemButton(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
     s->flags |= 0x40;
     s->flags |= 0x20;
     AnimatorSprite_ProcessAnimation(s, 0, 0);
-    if (idx == 0xd)
-        TitleMenu_DrawBattleButton(s);
+    if (idx == 0xd || idx == 0xe)
+        TitleMenu_DrawVsButton(s, idx - 0xd);
     else
         AnimatorSprite_Draw(s);
 }
@@ -849,35 +1007,39 @@ static void TitleMenu_OpenPlayerSelectPage(TitleMenuWork *p, s32 flag, s32 b) {
 
 /* TitleMenu_SelectVsMode0 / 1 / 2: VsMenu_CreateMode0 / 1 / 2 (download play, host, join) and the
  * wait task TitleMenuVsMode*Wait_Main, which sets the exit of the lobby when it closes. Battle Play
- * on one Dreamcast has no lobby: every mode takes the host's exit (2, TitleMenu_StartVsHost). */
+ * on one Dreamcast has no lobby: every mode takes the host's exit (2, TitleMenu_StartVsHost). The
+ * item's argument (unk34) is the mode: 0 TWO PLAYERS, 1 ONE PLAYER (Vs CPU, menus_vs_set_cpu). */
 static void TitleMenu_SelectVsMode(TitleMenuWork *p, s32 f, s32 a) {
     (void)f;
-    (void)a;
+    menus_vs_set_cpu(a == 1);
     p->state = 2;
 }
 
 /* TitleMenu_OpenVsSubPage (CREATE ROOM / JOIN): not used, Battle Play has no rooms */
 
 /* TitleMenu_OpenVsPage: the DS page has DS WIRELESS BATTLE (-> the host / join sub-page,
- * TitleMenu_OpenVsSubPage) and DS DOWNLOAD BATTLE. Battle Play has one button, the wireless
- * label relabelled BATTLE (TitleMenu_DrawBattleButton), which goes straight on as the host
- * item of the sub-page does (flags 4, slide colours 4); B / the back button as the original. */
+ * TitleMenu_OpenVsSubPage) and DS DOWNLOAD BATTLE (slide colours 3 / 6). Battle Play keeps the two
+ * buttons relabelled TWO PLAYERS and ONE PLAYER (Vs CPU; TitleMenu_DrawVsButton); both go straight
+ * on as the host item of the sub-page does (flags 4, slide colours 4 / the download item's 6), the
+ * mode in their argument; B / the back button as the original. */
 static void TitleMenu_OpenVsPage(TitleMenuWork *p, s32 flag, s32 b) {
     TitleMenuPage menu;
     memset(&menu, 0, sizeof(menu));
-    TitleMenu_InitPage(&menu, flag, 3, 0xd, 0x14, 0x14, 0x14, p);
+    TitleMenu_InitPage(&menu, flag, 3, 0xd, 0xe, 0x14, 0x14, p);
     menu.items[0].cb = TitleMenu_SelectVsMode;
+    menu.items[1].cb = TitleMenu_SelectVsMode;
     menu.items[4].cb = TitleMenu_OpenRootPage;
     menu.items[0].unk4 = 4;
-    menu.items[0].unk34 = -1;
-    menu.items[1].unk34 = -1;
+    menu.items[1].unk4 = 4;
+    menu.items[0].unk34 = 0;   /* TWO PLAYERS */
+    menu.items[1].unk34 = 1;   /* ONE PLAYER: Vs CPU */
     menu.items[2].unk34 = -1;
     menu.items[3].unk34 = -1;
     menu.items[4].unk34 = 1;
     menu.unk17c = 1;
     menu.unk180 = 0;
     menu.unk184[0] = 4;
-    menu.unk184[1] = 8;
+    menu.unk184[1] = 6;
     menu.unk184[2] = 8;
     menu.unk184[3] = 8;
     TitleMenu_CreatePageTask(&menu, p, b);
@@ -1017,6 +1179,8 @@ static void TitleMenu_LoadAssets(TitleMenuWork *p) {
     /* gTitleMenuFileTable[lang] */
     p->res808 = mn_res_load("/act/mnu_titl.bac");
     p->res80c = mn_res_load(s_tm_lang_bac[mn_lang()]);
+    /* Battle Play's buttons are spelled in English (TitleMenu_DrawVsButton) */
+    p->res_vs = mn_lang() == 1 ? p->res80c : mn_res_load(s_tm_lang_bac[1]);
     s_bg810 = mn_bg_load("/bg/mnu_titl_bg01_a.bbg");
     p->bg_sub3 = mn_bg_load("/bg/mnu_titl_bg01_b.bbg");
     p->bg_vs = mn_bg_load("/bg/mnu_titl_bg02_a.bbg");
@@ -1080,7 +1244,8 @@ static void TitleMenu_InitSprites(TitleMenuWork *w) {
         w->ids[i] = i - 2;
     }
     for (i = 9; i <= 18; i++) {
-        AnimatorSprite_Init(&w->sprites[i], w->res80c, (u16)(7 + (i - 9) * 3), 0, 1);
+        AnimatorSprite_Init(&w->sprites[i], (i == 0xd || i == 0xe) && w->res_vs ? w->res_vs : w->res80c,
+                            (u16)(7 + (i - 9) * 3), 0, 1);
         w->ids[i] = 7 + (i - 9) * 3;
     }
 }
@@ -1090,6 +1255,9 @@ static void TitleMenu_Destructor(void) {
     int i;
     mn_display_reset();
     mn_res_free(p->res808);
+    memset(s_tm_lbl, 0, sizeof(s_tm_lbl));   /* the spelled labels of these resources */
+    if (p->res_vs != p->res80c)
+        mn_res_free(p->res_vs);
     mn_res_free(p->res80c);
     mn_bg_free(p->bg_main3);
     mn_bg_free(p->bg_sub3);

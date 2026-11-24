@@ -70,7 +70,47 @@ class Disc:
             p.unlink()
 
 
-def assemble(root, out, first_read, coverage_exe=None):
+VS_STAGES = "z11 z12 z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72".split()
+
+
+def make_routes(D, routes_exe=None, jobs=None):
+    """Vs CPU racing lines (dreamcast/game/vs/route): one per Battle Play stage and character, searched
+    with the real game simulation in the converted stages. Linux: make -C dreamcast/game/vs routes;
+    Windows kit: vs_route.exe. Existing lines are kept (delete build/dreamcast/vs/routes to redo them)."""
+    b = D.b
+    rdir = b / "vs" / "routes"
+    jobs = jobs or max(1, (os.cpu_count() or 2))
+    if os.environ.get("SRDC_ROUTES") == "copy":   # test discs: only the lines already made
+        pass
+    elif not routes_exe:
+        subprocess.run(["make", "-C", str(D.root / "dreamcast/game/vs"), "-j%d" % jobs, "routes"], check=True)
+    else:
+        import concurrent.futures
+        rdir.mkdir(parents=True, exist_ok=True)
+        todo = [(s, c) for s in VS_STAGES for c in (0, 1) if not (rdir / ("%s_%d.rte" % (s, c))).is_file()]
+        exe = str(Path(routes_exe).resolve())
+
+        def one(sc):
+            s, c = sc
+            tmp = rdir / ("%s_%d.rte.tmp" % (s, c))
+            # relative paths from build/dreamcast: the object module keeps its directories in 64-byte buffers
+            r = subprocess.run([exe, "stages", "player", "objects", os.path.join("sprites", "bac"), s, str(c),
+                                os.path.relpath(tmp, b), "-budget", "900"], cwd=b, capture_output=True, text=True)
+            if r.returncode in (0, 3) and tmp.is_file():   # 3: a partial line (no way to the goal found)
+                tmp.replace(rdir / ("%s_%d.rte" % (s, c)))
+            return s, c, r.returncode, (r.stdout.strip().splitlines() or [""])[-1]
+
+        with concurrent.futures.ThreadPoolExecutor(jobs) as ex:
+            for s, c, rc, last in ex.map(one, todo):
+                print("vs route %s %s: %s" % (s, "Blaze" if c else "Sonic", last if rc in (0, 3) else "not found (the CPU follows the rival)"), flush=True)
+    n = 0
+    for p in sorted(rdir.glob("z*_*.rte")) if rdir.is_dir() else []:
+        D.cp(p, "vs")
+        n += 1
+    print("vs routes: %d of %d on the disc" % (n, 2 * len(VS_STAGES)), flush=True)
+
+
+def assemble(root, out, first_read, coverage_exe=None, routes_exe=None):
     D = Disc(root, out)
     b = D.b
     if D.d.exists():
@@ -247,6 +287,7 @@ def assemble(root, out, first_read, coverage_exe=None):
                            "special/sprites", "boss/extra/sprites", "models", "sound", "cutscene",
                            "--skip-argb-with-pt4", "--loose-ext=.csp", "--drop-packed"])
     shutil.copyfile(first_read, D.d / "1ST_READ.BIN")
+    make_routes(D, routes_exe)
     for sd in sorted((b / "stages").glob("z*")):
         if not (sd / "level.bin").is_file():
             continue
@@ -285,8 +326,9 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--first-read", required=True)
     ap.add_argument("--coverage-exe")
+    ap.add_argument("--routes-exe")
     a = ap.parse_args()
-    assemble(a.root, a.out, a.first_read, a.coverage_exe)
+    assemble(a.root, a.out, a.first_read, a.coverage_exe, a.routes_exe)
 
 
 if __name__ == "__main__":

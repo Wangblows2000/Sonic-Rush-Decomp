@@ -355,10 +355,11 @@ static void ResultsScreen_DrawCommon(RsWork *w) {
 }
 
 /* ---------------------------------------------------------------- exits */
-/* ResultsScreen_SaveVsResult: the record from the host's side (0 won, 1 lost, 2 draw) against player 2 */
+/* ResultsScreen_SaveVsResult: the record from the host's side (0 won, 1 lost, 2 draw) against player 2 (Vs CPU:
+ * against "CPU", an opponent of its own: mn_vs_cpu_record) */
 static void ResultsScreen_SaveVsResult(s32 mode, const u8 *mac) {
     const u16 *name;
-    int len = mn_player2_name(&name);
+    int len = mn_vs_cpu() ? mn_vs_cpu_record(&name, &mac) : mn_player2_name(&name);   /* Vs CPU: "CPU" */
     s32 v;
     switch (mode) {
     case 0:

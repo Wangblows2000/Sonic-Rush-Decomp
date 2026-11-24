@@ -753,6 +753,42 @@ void AnimatorSprite_DrawPieces(MnSpr *s, const MnSprPiece *p, int n) {
     }
 }
 
+void AnimatorSprite_DrawImagePieces(MnSpr *s, const MnImgPiece *p, int n) {
+    const MnImage *im, *src;
+    int i;
+    if (s->flags & SPR_HIDDEN)
+        return;
+    im = spr_image(s);
+    if (!im)
+        return;
+    for (i = 0; i < n && s_nquads < MN_MAX_QUADS; i++) {
+        MnQuad *q;
+        if (p[i].image < 0 || p[i].image >= s->res->n_images)
+            continue;
+        src = &s->res->images[p[i].image];
+        q = &s_quads[s_nquads++];
+        memset(q, 0, sizeof(*q));
+        q->x = (float)(s->x - im->ox + p[i].dx);
+        q->y = (float)(s->y - im->oy + p[i].dy);
+        q->w = p[i].w;
+        q->h = p[i].h;
+        q->u0 = (float)(src->x + p[i].sx);
+        q->u1 = q->u0 + p[i].w;
+        q->v0 = (float)(src->y + p[i].sy);
+        q->v1 = q->v0 + p[i].h;
+        q->res = s->res;
+        q->page = src->page;
+        q->image = (u16)p[i].image;
+        q->engine = s->engine;
+        q->prio = (u8)((s->flags & SPR_PRIO_MASK) >> 17);
+        q->kind = MNQ_SPRITE;
+        q->argb = (s->alpha >= 16 ? 0xff000000u : (u32)(s->alpha * 255 / 16) << 24) | 0xffffff;
+        q->oam = s->oam > 31 ? 31 : s->oam;
+        if (q->oam > s_max_oam)
+            s_max_oam = q->oam;
+    }
+}
+
 void mn_emit_flat(int engine, int prio, float x, float y, float w, float h, u32 argb) {
     MnQuad *q;
     if (s_nquads >= MN_MAX_QUADS)
@@ -793,6 +829,17 @@ void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y,
     q->prio = (u8)prio;
     q->kind = MNQ_BG;
     q->argb = 0xffffffff;
+}
+
+void mn_emit_bg_part_scaled(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
+                            float h, float scale) {
+    const MnQuad *q;
+    int n = mn_quads(&q);
+    mn_emit_bg_part(engine, prio, img, x, y, sx, sy, w, h);
+    if (mn_quads(&q) > n) {
+        s_quads[n].w = w * scale;
+        s_quads[n].h = h * scale;
+    }
 }
 
 /* an affine BG (G2x_SetBGyAffine with a Scale * Rot matrix): image pixel (cx, cy) at screen (cx, cy),

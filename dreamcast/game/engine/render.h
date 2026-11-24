@@ -10,6 +10,9 @@
  * Default (every mode but Battle Play): the whole 640x480 screen at 2.5 -> a 256x192 world window.
  * Battle Play sets one viewport per player (render_set_view) with the PVR user clip on. */
 extern float g_view_x, g_view_y, g_view_w, g_view_h, g_view_scale;
+/* rows (world px) the drawn window starts above the DS window the zone BG tables describe (the
+ * single-player view, main.c sp_view; 0 otherwise) */
+extern int g_view_row_ofs;
 #define VIEW_SCALE g_view_scale
 #define VIEW_OX g_view_x                    /* screen position of the view's top-left */
 #define VIEW_OY g_view_y

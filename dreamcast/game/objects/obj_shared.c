@@ -1382,6 +1382,12 @@ static void WaterLevelTrigger_State_ApplyOnce(Obj *w) {
             g_obj_camera[i].water = w->k.cam.value;
         }
     }
+    if (obj_vs_split_water())   /* Battle Play: each player's own level (native) */
+        for (i = 0; i < g_obj.n_players; i++) {
+            pl = player_n(i);
+            if (w->h.x >= pl->x - 0x4000 && w->h.x <= pl->x + 0x4000)
+                obj_water_set_player(i, w->k.cam.value, 1, 0);
+        }
     w->state = WaterLevelTrigger_State_Idle;
 }
 static void WaterLevelTrigger_State_SetBySide(Obj *w) {
@@ -1409,6 +1415,12 @@ static void WaterLevelTrigger_State_SetBySide(Obj *w) {
             e->flags &= ~0x2000000u;
         }
     }
+    if (obj_vs_split_water())   /* Battle Play: each player's own level by its own side (native) */
+        for (i = 0; i < g_obj.n_players; i++) {
+            pl = player_n(i);
+            f = pl->x < w->h.x ? !(w->prm->flags & 1) : (w->prm->flags & 1) != 0;
+            obj_water_set_player(i, w->k.cam.value, f, (w->prm->flags & 8) != 0);
+        }
 }
 Obj *WaterLevelTrigger_Create(ObjParam *p, s32 b, s32 c) {
     Obj *w;
@@ -1416,6 +1428,11 @@ Obj *WaterLevelTrigger_Create(ObjParam *p, s32 b, s32 c) {
         g_obj_camera[0].water = g_obj_camera[1].water = (u16)((u8)p->p6 * 10000 + (u8)p->p7 * 100 + p->p8);
         g_obj_camera[0].flags |= 0x1000000;
         g_obj_camera[1].flags |= 0x1000000;
+        if (obj_vs_split_water()) {
+            int k;
+            for (k = 0; k < g_obj.n_players; k++)
+                obj_water_set_player(k, g_obj_camera[0].water, 1, 0);
+        }
         p->x0 = 0xff;
         return NULL;
     }

@@ -33,6 +33,30 @@ ObjPlayerCtx *obj_player_ctx(const DcPlayer *p) {
     return NULL;
 }
 
+int obj_vs_split_water(void) { return g_obj.n_players > 1 && (W.flags & 0x20); }
+u16 obj_water_of(const DcPlayer *p) {
+    const ObjPlayerCtx *c = p != NULL && obj_vs_split_water() ? obj_player_ctx(p) : NULL;
+    if (c != NULL && c->water_set)
+        return c->water;
+    return g_obj_camera[(p != NULL && p->cam < 2) ? p->cam : 0].water;
+}
+void obj_water_set_player(int k, u16 level, int on, int flag2) {
+    ObjPlayerCtx *c;
+    if (k < 0 || k >= g_obj.n_players)
+        return;
+    c = &g_obj.players[k];
+    c->water_set = 1;
+    c->water = on ? level : 0xffff;
+    c->water_flags = on ? (0x1000000u | (flag2 ? 0x2000000u : 0)) : 0;
+}
+int objects_player_water(int k, u16 *level, u32 *flags) {
+    if (k < 0 || k >= g_obj.n_players || !g_obj.players[k].water_set)
+        return 0;
+    *level = g_obj.players[k].water;
+    *flags = g_obj.players[k].water_flags;
+    return 1;
+}
+
 DcPlayer *obj_box_player(const ObjBox *b) {
     return (b && b->owner_kind == OBJ_OWNER_PLAYER) ? (DcPlayer *)b->owner : NULL;
 }
@@ -422,7 +446,7 @@ void Player_Action_GimmickLaunch(DcPlayer *w, s16 vx, s16 vy) {
         return;
     w->vel_x = (s16)((w->vel_x >> 1) + (w->vel_x >> 2));
     w->vel_y = (s16)((w->vel_y >> 1) + (w->vel_y >> 2));
-    EffAirBubble_Spawn(w, 0, 0, g_obj_camera[0].water); /* gCamera.unk62 */
+    EffAirBubble_Spawn(w, 0, 0, obj_water_of(w)); /* gCamera.unk62 */
 }
 
 /* -------------------------------------------- Player_Action_DashRing */

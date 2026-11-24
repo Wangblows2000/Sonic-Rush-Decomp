@@ -206,6 +206,26 @@ static int rec_font_load(RecFont *f) {
     return 0;
 }
 
+/* native (Vs CPU race bar): ASCII text in the name plates' font (font8.bin, 8 px a character) as an ink
+ * mask (1 = ink) of w x h; returns the width drawn, 0 without font8.bin */
+int menus_text_mask(const char *text, u8 *mask, int w, int h) {
+    RecFont f;
+    int i, x, y, n = 0;
+    if (!rec_font_load(&f))
+        return 0;
+    memset(mask, 0, (size_t)w * h);
+    for (i = 0; text[i] && (i + 1) * 8 <= w; i++, n += 8) {
+        u32 g = (u32)Font_GetGlyphIndex(&f, (u8)text[i]);
+        const u8 *t = f.tiles + 64u * (g < f.nt ? g : 0);
+        for (y = 0; y < 8 && y < h; y++)
+            for (x = 0; x < 8; x++)
+                if (t[y * 8 + x] == 15)
+                    mask[y * w + i * 8 + x] = 1;
+    }
+    free(f.blob);
+    return n;
+}
+
 int mn_owner_name(const u16 **name) {
     *name = s_owner;
     return s_owner_len;

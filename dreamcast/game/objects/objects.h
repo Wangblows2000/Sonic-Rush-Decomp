@@ -138,6 +138,9 @@ void objects_add_player(DcPlayer *p);
 /* DS gCamera[idx] position (24.8). n views (1 on DC, 2 = DS dual screen). */
 void objects_set_view(int idx, s32 x, s32 y);
 void objects_set_view_count(int n);
+/* Battle Play: player k's own water level, once a water trigger set it (1; 0 = the camera's applies).
+ * main.c copies it into player k's camera (the viewport's water line, zone effects). */
+int objects_player_water(int k, u16 *level, u32 *flags);
 /* Re-run StageEvent_InitialSpawn (spawn everything in view) on the next
  * objects_frame_begin: call after a respawn or any camera jump.  The normal
  * update only spawns in the band entering the view, like the DS. */

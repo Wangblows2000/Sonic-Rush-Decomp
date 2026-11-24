@@ -2,7 +2,7 @@
 # Build the Windows kit (Windows 10 and later): a GUI that makes the disc from the owner's ROM.
 #   sh tools/dreamcast/winkit/make_winkit.sh  -> build/dreamcast/winkit/SonicRushDC-Windows.zip
 # Contents: SonicRushDC.exe (Win32 GUI), README.txt, app\ (bundled Python 3.13 + numpy + Pillow,
-# dsd/cdi4dc/wav2adpcm/sseqrender/test_coverage .exe, the converters, prebuilt 1ST_READ.BIN/IP.BIN).
+# dsd/cdi4dc/wav2adpcm/sseqrender/test_coverage/vs_route .exe, the converters, prebuilt 1ST_READ.BIN/IP.BIN).
 # No game data: everything on the disc is converted on the player's PC from their own ROM.
 # Needs: KallistiOS (environ.sh), MinGW-w64 (x86_64-w64-mingw32-gcc/windres), Rust with the
 # x86_64-pc-windows-gnu target, pip, network access to python.org and PyPI.
@@ -68,6 +68,12 @@ O=$ROOT/dreamcast/game/objects
 OBJ_SRCS=$(cd "$O" && make -s -n -B ../../../build/dreamcast/objects/test_coverage | grep -o 'obj_[a-z0-9_]*\.c\|\.\./player/dcp_[a-z_]*\.c' | tr '\n' ' ')
 [ -n "$OBJ_SRCS" ] || { echo "error: object module source list not found"; exit 1; }
 (cd "$O" && $CC -std=c99 -fwrapv -o "$A/bin/test_coverage.exe" $OBJ_SRCS test/test_coverage.c -lm)
+# Vs CPU racing line finder (dreamcast/game/vs/route): the same sources in the same link order (the
+# snapshot regions are bracketed by route/snap_begin.c and route/snap_end.c)
+V=$ROOT/dreamcast/game/vs
+VS_SRCS=$(cd "$V" && make -s -n -B ../../../build/dreamcast/vs/vs_route | grep -o ' route/snap_begin\.c.*route/vs_route\.c')
+[ -n "$VS_SRCS" ] || { echo "error: route finder source list not found"; exit 1; }
+(cd "$V" && $CC -std=c99 -fwrapv -fno-common -o "$A/bin/vs_route.exe" $VS_SRCS -lm)
 
 echo "== the disc maker (Win32 GUI)"
 G=$HERE/gui

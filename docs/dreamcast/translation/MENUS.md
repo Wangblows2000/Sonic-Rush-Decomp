@@ -6,7 +6,7 @@ player select (Sonic / Blaze / extra), the zone map with the story
 progression, the act select, the map pause and the options (difficulty, time
 limit, sound test, delete save data). Save data is the original `gSaveData`
 format, stored on the VMU. It also covers the title intro (TitleDemo), records, time attack, Try Again, the Extra Zone results,
-the attract demos and the Battle Play front end (two controllers, section 15). Host tests: `make -C dreamcast/game/menus host-test story-test` and the save
+the attract demos and the Battle Play front end (two controllers or Vs CPU, section 15). Host tests: `make -C dreamcast/game/menus host-test story-test` and the save
 test. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code:
@@ -38,11 +38,11 @@ test. Integrated in the game and played in Flycast (REGRESSION.md); not run on r
 | `mn_titlemenu.c` | TitleMenu_* (pages, button key frames, BG colour wipe, exits) |
 | `mn_zonemap.c` | ZoneMap_* (node graph, paths, story steps, moves, scroll view, start stage) + ZoneMapPause_* |
 | `mn_actsel.c` | ZoneActSelect_*, ZoneActSelectMode_* |
-| `mn_psel.c` | PlayerSelectMenu_* (no 3D models), Battle Play modes 1 / 2 (two instances) |
-| `mn_vs.c` | Battle Play: player 2's pad, the two players' wireless records, `Game_StartVsStage`, `menus_vs_exit` |
+| `mn_psel.c` | PlayerSelectMenu_* (no 3D models), Battle Play modes 1 / 2 (two instances; Vs CPU: player 2's automatic choice, the CPU tag) |
+| `mn_vs.c` | Battle Play: player 2's pad, the two players' wireless records, `Game_StartVsStage`, `menus_vs_exit`, the Vs CPU mode (`menus_vs_set_cpu`) |
 | `mn_timeselect.c` | TimeSelectMenu_* (Battle Play stage select) |
 | `mn_results.c` | ResultsScreen_* (Battle Play results) |
-| `test/test_vs.c` | Battle Play host test (two pads) |
+| `test/test_vs.c` | Battle Play host test (two pads, Vs CPU) |
 | `mn_options.c` | Options settings / sound test (layout rewritten) |
 | `tools/menudata.py`, `tools/menubg.py` | converters (section 4) |
 | `test/test_menus.c`, `test/mn_raster.h`, `test/link_main.c` | host test, host compositor, KOS link stub |
@@ -384,9 +384,9 @@ only; **not translated** = section 8.
 | TitleMenu_DrawItemButton, DrawBackButton, Unk_022d7ac4 (`DrawPageTitle`) | same | as-is |
 | TitleMenu_CreateFadeTask, StartFadeToBlack/White, FadeTask_Main, CreateBgSlideTask*, BgSlideTask_Main, ApplyBgSlideLayers | same | modified (palette transfer -> wipe image colour 1, one image per BG) |
 | TitleMenu_ExitToTitleScreen, ExitToGameStart, ExitToPlayerSelectMode3/4, ExitToOptions | same | modified (scene changes -> starts / requests) |
-| TitleMenu_OpenVsPage | same | modified (one BATTLE button, `TitleMenu_DrawBattleButton`) |
+| TitleMenu_OpenVsPage | same | modified (its two buttons relabelled TWO PLAYERS / ONE PLAYER, `TitleMenu_DrawVsButton`; section 15) |
 | TitleMenu_OpenVsSubPage | - | not used (rooms) |
-| TitleMenu_SelectVsMode0-2 (+ TitleMenuVsMode*Wait_Main) | `TitleMenu_SelectVsMode` | modified: the lobby's exit (state 2) at once |
+| TitleMenu_SelectVsMode0-2 (+ TitleMenuVsMode*Wait_Main) | `TitleMenu_SelectVsMode` | modified: the lobby's exit (state 2) at once; the item's argument sets the mode (`menus_vs_set_cpu`) |
 | TitleMenu_StartVsHost (exit table 2; StartVsJoin / GoToVsLobby 3 / 4) | `TitleMenu_StartVsHost` | modified (VsConnect -> PlayerSelectMenu_StartVs) |
 | TitleMenu_ShowMsgBox0, Attach/DetachVsMenu, VsMenu_*, VsConnect_* | - | not translated (wireless warning, lobby; section 15) |
 | PlayerSelectMenu_StartMode0/3/4, Create, LoadAssets, InitBackgrounds, InitSprites, Main, Action_Opening/Intro/Select/ScrollOut/ScrollIn/Confirm/FadeOutBack, State_Intro/Select/ScrollOut/ScrollIn/Confirmed/FadeOutBack, SetBackgroundSelection, IsFullyUnlocked, EaseValue, ExitToGame, ExitBack, Set/Draw sprite helpers | `PlayerSelectMenu_StartMode` + statics | modified (models and camera orbit dropped; sprite helpers merged; touch -> pad) |
@@ -586,16 +586,44 @@ unchanged; the partner's record is the other local player's, seen in the same
 frame. Not ported: the lobby (VsMenu / VsConnect), download play, the link
 icons, the wireless error / "partner left" message boxes, the rematch sync.
 
+Two modes (native): **2 Players** (two controllers, the above) and **Vs CPU**
+(player 2 is the computer: `mn_vs_cpu()`, set by `menus_vs_set_cpu`). Vs CPU
+runs the same screens and the same original state machines. Player 2's pad is
+not read (`mn_vs_pad_update` gives gPad2 no keys); the computer's presses
+come from the select (`PlayerSelectMenu_CpuInput`) and TimeSelect's ready.
+`MenuRequest.cpu` is 1 on its `MENU_REQ_VS_STAGE`, 0 in 2 Players.
+
 Flow:
 
-1. Title menu, VS page (title "BATTLE PLAY"): one button instead of the DS's
-   DS WIRELESS BATTLE / DS DOWNLOAD BATTLE, the wireless label image with only
-   its "BATTLE" word (`TitleMenu_DrawBattleButton`: the word found from the
-   label's text columns, the background filled from its own plain columns; eng
-   BATTLE, fra COMBAT, deu KAMPF, ita BATTAGLIA, jpn / spa keep the whole
-   label). A on it skips the wireless warning (MsgBox 0), the room sub-page
-   (CREATE ROOM / JOIN) and the lobby, and takes the lobby's host exit (exit
-   table 2, `TitleMenu_StartVsHost`: `gGameState.unk10 = 1`, `unk18 |= 0x20`).
+1. Title menu, VS page (title "BATTLE PLAY"): the DS page's two buttons
+   (items 0xd DS WIRELESS BATTLE, 0xe DS DOWNLOAD BATTLE) relabelled **TWO
+   PLAYERS** (2 Players) and **ONE PLAYER** (Vs CPU). Each takes the lobby's
+   host exit at once (flags 4; argument 0 / 1 = the mode, `menus_vs_set_cpu`;
+   slide colours 4 / 6). A on either skips the wireless warning (MsgBox 0), the
+   room sub-page (CREATE ROOM / JOIN) and the lobby. It takes exit table 2,
+   `TitleMenu_StartVsHost`: `gGameState.unk10 = 1`, `unk18 |= 0x20`.
+
+   Labels (`TitleMenu_DrawVsButton`, `AnimatorSprite_DrawImagePieces`): the
+   words are spelled at run time with letters cut from the English button
+   labels of `act/mnu_titl_eng.bac` on the disc. No art is added. The button
+   font has no digits, no V and no U, so "2 PLAYERS" and "VS CPU" cannot be
+   built: TWO / ONE PLAYER(S) is the wording.
+   - **Words:** each source label (GAMEPLAY, BATTLE PLAY, TIME ATTACK,
+     OPTIONS, ACT, BOSS, DS WIRELESS BATTLE) splits into words at its
+     background columns (the reference columns 6 / 7, a 2-px dither).
+   - **Letters:** each word splits at the columns with only background, halo
+     or outline (the colours of the word's first two columns). A letter is its
+     fill columns plus one outline column each side. A label is used only if
+     it gives the letter counts of its known text.
+   - **Button:** the frame and background are item 0xd's image in the same
+     state (normal, selected, the confirm flash frames). The letters come from
+     the other items' images in that state.
+   - **Layout:** the font's spacing (the word space of BATTLE PLAY), even
+     shifts only (the dither phase), centred.
+   - **Fallback:** a missing letter gives the original label.
+   - **Languages:** all six show the English words. Other languages load
+     `mnu_titl_eng.bac` for these two sprites. The page title stays in the
+     language: COMBAT, KAMPF, 対戦プレイ ...
 
    Wording: MsgBox 9 ("QUIT WIRELESS BATTLE ?", both quit prompts) is drawn
    as "QUIT BATTLE ?" from the words of the same image (split at its fully
@@ -608,7 +636,12 @@ Flow:
    show. Name plates (stage select, results): the owner's name / player 2's
    name, or "PLAYER 1" / "PLAYER 2" in the plate font when unset
    (`mn_vs_player_name`); the select's plate shows the character's name
-   (the original OAM priorities of `PlayerSelectMenu_InitSprites`).
+   (the original OAM priorities of `PlayerSelectMenu_InitSprites`). Vs CPU:
+   player 2's name is "CPU" (`mn_vs_player_name(1)` = -3, the same font8 /
+   font_ipl_8x8 glyphs) on the stage select and results plates, and player 2's
+   select column has a "CPU" tag. The tag is the same strip at 2x, white on a
+   dark box, where player 1 has the back button (`PlayerSelectMenu_DrawCpuTag`,
+   a task of the scene, `mn_emit_bg_part_scaled`).
 2. `PlayerSelectMenu_StartVs`: two PlayerSelect instances, player 1 mode 1 on
    engines 0 / 1, player 2 mode 2 on engines 2 / 3 (`MN_ENGINE_P2`), one file
    set shared. The original's handshake (`State_Sync`), opening, select,
@@ -621,16 +654,27 @@ Flow:
    0xd2-frame wait and the fade, `ExitToGame(1, ...)` sets `gGameState.unk4`
    (player 1's character) / `unk8` (player 2's) and starts TimeSelect. The
    scene changes are player 1's; the guest reaching an exit first waits.
+   Vs CPU (`PlayerSelectMenu_CpuInput`, player 2's `State_Select` on gPad2):
+   - The computer stays on its character (Blaze) until player 1 decides.
+   - If player 1 decides that character, the original skip of the partner's
+     decided character moves the CPU to the other one.
+   - On the other character it presses A 0x20 frames after player 1's decision.
+     Player 1's confirm voice plays first, and player 1's B can still take the
+     choice back in that time.
+   - The duplicate rule, the 0xd2-frame wait and the exits are unchanged.
 3. `TimeSelectMenu_StartMode0` (player 1 the chooser): LEFT / RIGHT over the
    stages unlocked in either story (`GetUnlockedStageMask` on `gSaveData.unkC`
    / `unk64`, 7 zones x acts 1 / 2), A confirms, B goes back to the character
    select; then MsgBox 0xe and both players press A (or 200 frames pass).
    Player 2's follower record (handshake + unlock mask, the ready flag on its
-   A) is `TimeSelectMenu_LocalGuest_Main`. `Game_StartVsStage(stage / 2,
+   A) is `TimeSelectMenu_LocalGuest_Main`. Vs CPU: player 1 alone chooses (as
+   in 2 Players). The CPU's ready flag is set at once, so player 1's A starts
+   the race (no 200-frame wait). `Game_StartVsStage(stage / 2,
    stage % 2)` returns `MENU_REQ_VS_STAGE`: `zone` (DS zone id 0..6), `act`
    (0 / 1), `character` = player 1, `character2` = player 2, `mode` = 1
    (`gGameState.unk10` of `Game_StartVsStage`), `easy` = `gGameState.unk14`
-   (the VS path does not change it).
+   (the VS path does not change it), `cpu` = the mode (1 Vs CPU, 0 2 Players;
+   `mn_request_vs_stage`).
 4. `menus_vs_exit(res)`: `res->winner` is `data_022c4590.unk40` as
    `ResultsScreen_GetResultKind` gives it the host (0 player 1, 1 player 2,
    2 draw); it starts the ResultsScreen and returns `MENU_REQ_NONE`. The
@@ -638,21 +682,29 @@ Flow:
    poses (menu.narc), the choice window (TRY AGAIN, CHANGE CHARACTER/ACT,
    QUIT) chosen by player 1 (on the DS only the host chooses; the guest's
    unit follows), QUIT asks MsgBox 9. Then `SaveData_RecordVsResult` (player
-   1's view, opponent = player 2's name, MAC 0) and the commit, and
+   1's view, opponent = player 2's name, MAC 0; Vs CPU: opponent "CPU" with
+   MAC ff:ff:ff:ff:ff:ff, an entry of its own in the 10 opponents,
+   `mn_vs_cpu_record`) and the commit, and
    `ResultsScreen_Exit`: TRY AGAIN -> `MENU_REQ_VS_STAGE` with the same
-   stage and characters (from `menus_run_frame`), CHANGE -> the character
-   select, QUIT -> the title screen. The original screen shows no times or
+   stage and characters (from `menus_run_frame`; `cpu` kept), CHANGE -> the
+   character select (in the same mode), QUIT -> the title screen. Vs CPU: the
+   screen is the same (WIN / LOSE / DRAW from the winner); only player 1's pad
+   is read, as in 2 Players. The original screen shows no times or
    rings (`VsRaceResult.time / rings / finished` are not used).
 
 A race started without the selects (debug start): `menus_vs_prepare(zone, act,
 character, character2)` first sets what the two selects leave (`unk4` / `unk8`,
 zone / act, VS mode, the records). Every `MENU_REQ_VS_STAGE` carries two
-different characters, the ones the results draw.
+different characters, the ones the results draw. `menus_vs_set_cpu(on)` sets
+the mode for such a start (call it with `menus_vs_prepare`; prepare does not
+change it). The results' TRY AGAIN request then carries `cpu = on`.
 
-main.c: every frame `menus_set_pad2(&pad_port_b)` before `menus_run_frame`;
-on `MENU_REQ_VS_STAGE` start the race; at its end `menus_vs_exit(&res)` and
-run the menus (a rematch comes back as `MENU_REQ_VS_STAGE`). Names:
-`menus_set_owner_name` (player 1) and `menus_set_player2_name` (default empty).
+main.c: every frame `menus_set_pad2(&pad_port_b)` before `menus_run_frame`
+(ignored in Vs CPU); on `MENU_REQ_VS_STAGE` start the race (`r.cpu`: player 2
+computer-controlled); at its end `menus_vs_exit(&res)` and run the menus (a
+rematch comes back as `MENU_REQ_VS_STAGE`, with the same `cpu`). Names:
+`menus_set_owner_name` (player 1) and `menus_set_player2_name` (default
+empty; not shown in Vs CPU).
 
 Engines and composition: `MN_ENGINES` 4, `mn_bg_ofs(engine)` (player 2's
 `gDisplayMain` / `gDisplaySub`), `g_mn_bright[4]`; `MnComp.nbr` / `br[]`: a
@@ -689,12 +741,24 @@ screens). Section 3 lists the three compositions.
 | ResultsScreen_RematchSync_Main, CreateRematchSync, LinkLost_Main, ShowLinkLostMessage, LinkIcon_* | - | not translated |
 | - | `menus_set_pad2`, `menus_vs_exit`, `menus_set_player2_name`, `menus_vs_prepare`, `mn_vs_player_name`, WirelessSession records, `mn_vs_pad_update` | new |
 | MsgBox message 9 drawing | `mb_splice_build` (mn_msgbox.c), `AnimatorSprite_DrawPieces` (mn_core.c) | new (QUIT BATTLE ?) |
+| - | `menus_vs_set_cpu`, `mn_vs_cpu`, `mn_vs_cpu_record` (mn_vs.c), `PlayerSelectMenu_CpuInput`, `PlayerSelectMenu_DrawCpuTag` / `CreateCpuTag` (mn_psel.c), `TitleMenu_DrawVsButton` + `tm_glyphs` / `tm_vs_label_build` (mn_titlemenu.c), `AnimatorSprite_DrawImagePieces`, `mn_emit_bg_part_scaled` (mn_core.c) | new (Vs CPU) |
 
 Host test: `test/test_vs.c` (in `host-test`): the title menu's VS page to the
 two players' select, the same-character rule and the cancels, the quit
 prompt, the stage select over the unlocked stages (locked ones skipped, wrap),
 the request fields, results win / lose / draw with rematch, character select
-and quit, the back button and the 200-frame ready wait, the one-button VS page
+and quit, the back button and the 200-frame ready wait, the two-button VS page
 and the spliced quit message, `menus_vs_prepare` with repeated TRY AGAIN, CHANGE
-with new picks and QUIT, the PLAYER 1 / PLAYER 2 plates.
+with new picks and QUIT, the PLAYER 1 / PLAYER 2 plates. Vs CPU
+(`test_cpu_flow`, `test_cpu_prepare`, `test_vs_page_languages`):
+- The two spelled buttons (pieces of several images, 128 px), in all six
+  languages. TWO PLAYERS gives cpu 0, ONE PLAYER cpu 1.
+- Player 2's pad held all the time changes nothing in the select, the stage
+  select or the results.
+- Player 1 takes the CPU's character: the CPU moves to the other one and
+  decides by itself. Player 1's B before the CPU decides takes the choice back.
+- The CPU tag, and the stage select with player 1 alone and no 200-frame wait.
+- `MENU_REQ_VS_STAGE` with cpu 1; the CPU record ("CPU", MAC ff); TRY AGAIN
+  and CHANGE keep cpu 1; QUIT.
+- `menus_vs_set_cpu` + `menus_vs_prepare` rematches, and back to 0.
 

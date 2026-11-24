@@ -842,7 +842,7 @@ void zonefx_draw_layer(int layer, int list, float z) {
     if (!s_on || !s_lv)
         return;
     if (s_fx_kind == 2 && s_water_row < 192)
-        level_draw_layer_split(s_lv, layer, (pvr_list_t)list, z, g_cam_y + s_water_row, ZFX_TINT_ARGB);
+        level_draw_layer_split(s_lv, layer, (pvr_list_t)list, z, g_cam_y + g_view_row_ofs + s_water_row, ZFX_TINT_ARGB);
     else
         level_draw_layer(s_lv, layer, (pvr_list_t)list, z);
 }
@@ -872,13 +872,13 @@ static void water_surface(void) {
     if (img == NULL || a == NULL || img->page >= a->n_pages || a->tex[img->page].ptr == NULL)
         return;
     y = ((s32)g_obj_camera[0].water) - (s32)g_cam_y;
-    if (y < -3 || y > 0xc3)
+    if (y < -3 || y > (s32)VIEW_H + 3)
         return;
     im = (int)(img - s_wspr.res->images);
     bank = spr_atlas_bank(a, im, -1);
     /* AnimatorSprite_Init(.., 0x4004, ..): OAM priority 0, order 0x15 = the OBJ prio 0 band of
      * obj_draw.c (11 + (0x40 - 0x15) * 0.01), in front of layer A */
-    for (x = -0x20; x < 0x100; x += 0x40)
+    for (x = -0x20; x < (s32)VIEW_W; x += 0x40)
         draw_sprite_world_pal(&a->tex[img->page], bank, PVR_LIST_TR_POLY, g_cam_x + x - img->origin_x,
                               g_cam_y + y - img->origin_y, (float)img->w, (float)img->h, (float)img->x,
                               (float)img->y, (float)(img->x + img->w), (float)(img->y + img->h), 0, 11.43f, 0xffffffff);

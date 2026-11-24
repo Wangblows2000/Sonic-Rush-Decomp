@@ -9,6 +9,7 @@
 
 float g_cam_x, g_cam_y;
 float g_view_x = 0.0f, g_view_y = 0.0f, g_view_w = 640.0f, g_view_h = 480.0f, g_view_scale = 2.5f;
+int g_view_row_ofs;
 int g_render_clip;
 static pvr_list_t s_list;
 

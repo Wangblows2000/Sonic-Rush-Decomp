@@ -167,7 +167,7 @@ def make_disc(out_dir):
     work = APP / "build" / "disc"
     pre = APP / "prebuilt"
     py("tools/dreamcast/disc/assemble_disc.py", "--root", APP, "--out", work, "--first-read", pre / "1ST_READ.BIN",
-       *([] if not WIN else ["--coverage-exe", APP / "bin" / "test_coverage.exe"]))
+       *([] if not WIN else ["--coverage-exe", APP / "bin" / "test_coverage.exe", "--routes-exe", APP / "bin" / "vs_route.exe"]))
     return work
 
 

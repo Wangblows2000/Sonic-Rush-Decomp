@@ -9,7 +9,7 @@ OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o e
        $(patsubst %.c,%.o,$(wildcard menus/mn_*.c)) save/save.o save/save_vmu.o \
        $(patsubst %.c,%.o,$(wildcard special/sp_*.c)) \
        $(patsubst %.c,%.o,$(wildcard cutscene/cs_*.c)) demo/demo.o \
-       camera/camera.o zonefx/zonefx.o vs/vs.o
+       camera/camera.o zonefx/zonefx.o vs/vs.o vs/vs_cpu.o
 KOS_CFLAGS += -O2 -fwrapv -I../../tools/dreamcast/stages
 # measurement build: make MEMTRACK=1 (engine/memtrack.c: live heap blocks per caller, compared
 # between visits of the scene named in /cd/debug/memtrack.txt); clean first, as for any flag change

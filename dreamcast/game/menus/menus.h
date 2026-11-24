@@ -32,6 +32,7 @@ typedef struct {
     int easy;        /* gGameState.unk14 (difficulty: 1 = normal ... see MENUS.md) */
     const char *scene;
     int character2;  /* Battle Play: player 2's character (0 Sonic, 1 Blaze; never == character) */
+    int cpu;         /* Battle Play: 1 = Vs CPU (player 2 is computer-controlled), 0 = 2 Players */
 } MenuRequest;
 
 /* Sound hooks: original SDAT ids (SysSound_* / Sound_* call sites). NULL = silent. */
@@ -117,6 +118,11 @@ void menus_set_player2_name(const uint16_t *utf16, int len);
  * the stage select would have (characters, zone / act, VS mode, the records) so menus_vs_exit's
  * results, TRY AGAIN and CHANGE work; character2 is made the other character if equal */
 void menus_vs_prepare(int zone, int act, int character, int character2);
+/* Vs CPU (native): the mode the next menus_vs_prepare / VS flow uses (1 = player 2 is the CPU) */
+void menus_vs_set_cpu(int on);
+/* ASCII text in the name plates' font (font8.bin glyphs, 8 px each) as an ink mask (1 = ink), w x h;
+ * returns the width drawn (0: no font) */
+int menus_text_mask(const char *text, unsigned char *mask, int w, int h);
 void menus_shutdown(void);
 /* The staff roll ended with CS_NEXT_UNLOCK_NOTICES (PostStaffRoll): show the unlock
  * notices the save calls for (player-select page, sound test), then the SEGA logo.

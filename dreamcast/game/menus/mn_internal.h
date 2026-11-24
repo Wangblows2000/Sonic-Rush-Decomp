@@ -152,6 +152,10 @@ void AnimatorSprite_DrawScaled(MnSpr *s, fx32 sx, fx32 sy);
 int AnimatorSprite_AnimCount(const MnSpr *s);
 typedef struct { s16 sx, sy, w, h, dx, dy; } MnSprPiece;
 void AnimatorSprite_DrawPieces(MnSpr *s, const MnSprPiece *p, int n);
+/* as AnimatorSprite_DrawPieces, each piece cut from its own image of the sprite's resource (Battle Play's
+ * spelled button labels: letters of several labels); dx / dy in the sprite's current image box */
+typedef struct { s16 image, sx, sy, w, h, dx, dy; } MnImgPiece;
+void AnimatorSprite_DrawImagePieces(MnSpr *s, const MnImgPiece *p, int n);
 const MnImage *AnimatorSprite_CurImage(const MnSpr *s, int *index);
 int mn_image_texel(const MnRes *r, int image, int x, int y);
 int mn_image_opaque(const MnRes *r, int image, int x, int y);
@@ -178,6 +182,9 @@ void mn_affine_corners(const MnQuad *q, float xy[4][2]);
  * priority `prio` (per-row BG scroll / split effects) */
 void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
                      float h);
+/* the same part drawn `scale` times its size (Battle Play's "CPU" tag) */
+void mn_emit_bg_part_scaled(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
+                            float h, float scale);
 /* Single-screen composition. The two DS engines are not shown as two
  * screens: a scene places rectangles of an engine's DS frame (source rect in
  * DS px) into the one 640x480 frame with a uniform scale. Regions are drawn
@@ -445,6 +452,11 @@ int mn_player2_name(const u16 **name);
 /* the name shown for player p (0 / 1): the set name (length > 0), else "PLAYER 1" / "PLAYER 2"
  * (returned as -8: exact, for mn_name_strips) */
 int mn_vs_player_name(int p, const u16 **name);
+/* Vs CPU (native, menus_vs_set_cpu): 1 when player 2 is the computer. Then player 2's pad is ignored,
+ * its select / ready are automatic, it is shown as "CPU" (mn_vs_player_name) and the VS record's
+ * opponent is mn_vs_cpu_record's name "CPU" with a MAC no wireless partner has (ff:ff:ff:ff:ff:ff). */
+int mn_vs_cpu(void);
+int mn_vs_cpu_record(const u16 **name, const u8 **mac);
 /* the font_ipl_8x8 name strips (font8.bin, as Records_LoadNameGlyphs): rows of 7 glyphs (8 for an
  * exact length lens[row] < 0; 64 x 8) at y = 16 * row, ink colour index 1 + row; NULL without font8.bin */
 MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u16 *ink);

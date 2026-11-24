@@ -1062,7 +1062,7 @@ void obj_player_effect(DcPlayer *p, s32 fx, s32 a, s32 b) {
         break;
     case DCP_FX_AIR_BUBBLE:  /* EffAirBubble_Spawn(w, a, b, water level): jump / brake (data_ov000_0236ab3a[cam]),
                               * gimmick launch (gCamera.unk62) */
-        EffAirBubble_Spawn(p, a, b, g_obj_camera[p->cam < 2 ? p->cam : 0].water);
+        EffAirBubble_Spawn(p, a, b, obj_water_of(p));
         break;
     default:
         break;

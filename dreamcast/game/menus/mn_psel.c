@@ -6,7 +6,8 @@
  * player 2 = mode 2 on engines 2 / 3 (MN_ENGINE_P2) with gPad2; the wireless
  * send / partner receive records (WirelessSession_*) are the two players'
  * records in mn_vs.c, so the partner logic (same choice blocked, both decided ->
- * TimeSelect, cancels) is the original's.
+ * TimeSelect, cancels) is the original's. Vs CPU: player 2's instance is driven by the computer
+ * (PlayerSelectMenu_CpuInput) and its column is tagged "CPU" (PlayerSelectMenu_DrawCpuTag).
  *
  * Kept: the state machine (Opening, Intro, Select, ScrollOut/ScrollIn,
  * Confirm/Confirmed, FadeOutBack), its timers, key-frame positions
@@ -46,6 +47,7 @@ typedef struct {
     s32 eng;               /* engine of the DS main screen: 0, or MN_ENGINE_P2 for player 2 */
     s32 player;            /* 0 / 1: whose pad and wireless record */
     MnPad *pad;            /* gPad / gPad2 */
+    s32 cpu_t;             /* Vs CPU: frames since player 2 (the computer) could decide */
 } PselWork;
 
 static void PlayerSelectMenu_Main(void);
@@ -530,6 +532,49 @@ static BOOL PlayerSelectMenu_VsGuestDone(PselWork *w) {
     return TRUE;
 }
 
+/* Vs CPU (native): player 2's select played by the computer on gPad2 (released: mn_vs_pad_update). It
+ * keeps its character until player 1 decides; on player 1's character the select itself moves it on
+ * (the original skip of the partner's decided character, above in State_Select), on the other one it
+ * presses A 0x20 frames later (player 1's confirm voice first; player 1 may still cancel with B). */
+static void PlayerSelectMenu_CpuInput(PselWork *w, MnPad *pad) {
+    s32 p1 = PlayerSelectMenu_GetPartnerChoice(w);
+    if (p1 == 4 || p1 == w->unk14) {
+        w->cpu_t = 0;
+        return;
+    }
+    if (++w->cpu_t >= 0x20) {
+        w->cpu_t = 0;
+        pad->trg |= PAD_A;
+    }
+}
+
+/* Vs CPU (native): player 2's column is tagged "CPU" in the name plates' font (font8.bin, the original
+ * font_ipl_8x8 glyphs: mn_name_strips), twice its size, white on a dark box, on player 2's touch screen
+ * where player 1 has the back button (the guest has none). A task of the scene (tag 0x1000). */
+typedef struct {
+    MnBgImg *img;
+} PselCpuTag;
+static void PlayerSelectMenu_DrawCpuTag(void) {
+    PselCpuTag *t = TASK_WORK(PselCpuTag);
+    if (!t->img)
+        return;
+    mn_emit_bg_part_scaled(MN_ENGINE_P2, 0, t->img, 6, 0x58, 0, 0, 24, 8, 2.0f);
+    mn_emit_flat(MN_ENGINE_P2, 0, 2, 0x54, 54, 24, 0xc0000000u);
+}
+static void PlayerSelectMenu_CpuTag_Destructor(void) {
+    PselCpuTag *t = TASK_WORK(PselCpuTag);
+    mn_bg_free(t->img);
+    t->img = NULL;
+}
+static void PlayerSelectMenu_CreateCpuTag(void) {
+    PselCpuTag *t = (PselCpuTag *)Task_Create(PlayerSelectMenu_DrawCpuTag, PlayerSelectMenu_CpuTag_Destructor, 0,
+                                              0x1002, 0x1000, sizeof(PselCpuTag))->work;
+    const u16 *nm;
+    int len = mn_vs_player_name(1, &nm);
+    u16 ink = 0x7fff;
+    t->img = mn_name_strips(&nm, &len, 1, &ink);
+}
+
 /* ------------------------------------------------------------- states */
 /* PlayerSelectMenu_State_StartSync / _State_Sync: the two units' handshake on record byte 3 */
 static void PlayerSelectMenu_State_Sync(void) {
@@ -686,6 +731,8 @@ static void PlayerSelectMenu_State_Select(void) {
     }
     if (w->unkC == 0)
         mn_automap_choice(&pad->cur, &pad->trg, w->unk14, (u32)w->unk0);   /* test builds: debug/automap.txt */
+    if (w->unkC == 2 && mn_vs_cpu())
+        PlayerSelectMenu_CpuInput(w, pad);
     if (pad->trg & PAD_A) {   /* PlayerSelectMenu_IsConfirmInput */
         PlayerSelectMenu_Action_Confirm();
         return;
@@ -1176,7 +1223,7 @@ void PlayerSelectMenu_StartMode(int mode) {
 }
 
 /* Battle Play (SceneChange_ToPlayerSelectMenuMode1 on the host, ..Mode2 on the guest): both players'
- * selects at once, player 1 the host (mode 1), player 2 the guest (mode 2) */
+ * selects at once, player 1 the host (mode 1), player 2 the guest (mode 2; Vs CPU: the computer) */
 void PlayerSelectMenu_StartVs(void) {
     mn_display_reset();
     PlayerSelect_ComposeVs();
@@ -1184,6 +1231,8 @@ void PlayerSelectMenu_StartVs(void) {
     mn_vs_reset_records();
     PlayerSelectMenu_Create(1, 0);   /* PlayerSelectMenu_StartMode1 */
     PlayerSelectMenu_Create(2, 1);   /* PlayerSelectMenu_StartMode2 */
+    if (mn_vs_cpu())
+        PlayerSelectMenu_CreateCpuTag();
     gSaveDataBusy = 1;               /* gSystemFlags |= 0x10 */
 }
 

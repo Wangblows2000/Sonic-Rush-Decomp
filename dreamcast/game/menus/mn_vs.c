@@ -10,6 +10,9 @@
  * arrays in this file, so the original partner logic runs unchanged (the partner's record
  * is the other local player's, seen in the same frame).
  *
+ * Vs CPU (native, MENUS.md 15): the same screens with player 2 played by the computer: its pad is
+ * ignored, its character select and ready are automatic, its name is "CPU" (MenuRequest.cpu = 1).
+ *
  * Flow (MENUS.md 15):
  *   TitleMenu VS page -> TitleMenu_StartVsHost -> PlayerSelectMenu_StartVs (both players)
  *   -> TimeSelectMenu_StartMode0 (player 1 picks the stage) -> Game_StartVsStage
@@ -22,6 +25,7 @@ static InputState s_pad2;
 static u8 s_vs_rec[2][0x40];   /* the two players' wireless records */
 static u16 s_p2_name[16];
 static int s_p2_len;
+static int s_vs_cpu;           /* Vs CPU: player 2 is the computer (menus_vs_set_cpu) */
 
 void menus_set_pad2(const InputState *in2) {
     if (in2)
@@ -29,7 +33,21 @@ void menus_set_pad2(const InputState *in2) {
     else
         memset(&s_pad2, 0, sizeof(s_pad2));
 }
-void mn_vs_pad_update(void) { Pad_Update(&gPad2, mn_pad_from_input(&s_pad2)); }
+/* Vs CPU: player 2's controller is not read (gPad2 stays released; the CPU's presses are made by the
+ * select, PlayerSelectMenu_CpuInput, and TimeSelect's ready, TimeSelectMenu_LocalGuest_Main) */
+void mn_vs_pad_update(void) { Pad_Update(&gPad2, s_vs_cpu ? 0 : mn_pad_from_input(&s_pad2)); }
+
+/* Vs CPU (native): the TitleMenu's ONE PLAYER button (TitleMenu_SelectVsMode), main.c's debug start
+ * (before menus_vs_prepare); kept by TRY AGAIN and CHANGE CHARACTER/ACT, reset by TWO PLAYERS */
+void menus_vs_set_cpu(int on) { s_vs_cpu = on ? 1 : 0; }
+int mn_vs_cpu(void) { return s_vs_cpu; }
+int mn_vs_cpu_record(const u16 **name, const u8 **mac) {
+    static const u16 cpu[3] = { 'C', 'P', 'U' };
+    static const u8 nomac[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+    *name = cpu;
+    *mac = nomac;
+    return 3;
+}
 
 void menus_set_player2_name(const uint16_t *utf16, int len) {
     if (len < 0)
@@ -46,10 +64,15 @@ int mn_player2_name(const u16 **name) {
 }
 
 /* an unnamed player (a fresh VMU has no owner name; player 2 has none unless set) is shown as
- * "PLAYER 1" / "PLAYER 2" in the name-plate font */
+ * "PLAYER 1" / "PLAYER 2" in the name-plate font; Vs CPU: player 2 is "CPU" */
 int mn_vs_player_name(int p, const u16 **name) {
     static const u16 id[2][8] = { { 'P', 'L', 'A', 'Y', 'E', 'R', ' ', '1' }, { 'P', 'L', 'A', 'Y', 'E', 'R', ' ', '2' } };
-    int len = p ? mn_player2_name(name) : mn_owner_name(name);
+    int len;
+    if (p && s_vs_cpu) {
+        const u8 *mac;
+        return -mn_vs_cpu_record(name, &mac);
+    }
+    len = p ? mn_player2_name(name) : mn_owner_name(name);
     if (len > 0)
         return len;
     *name = id[p ? 1 : 0];

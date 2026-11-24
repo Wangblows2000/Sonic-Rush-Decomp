@@ -175,6 +175,8 @@ void ui_hud_layout(int scale, int safe_x0, int safe_y0, int safe_x1, int safe_y1
 /* ScorePopups are drawn in world space: set the camera (top-left of the 256x192
  * world window, world px) once per frame before ui_draw_tr (main.c: g_cam_x/y). */
 void ui_set_camera(float x, float y);
+/* screen px per world px of the world-anchored UI sprites (2.5; main.c: the single-player view's scale) */
+void ui_set_world_scale(float k);
 
 /* ------------------------------------------- boss stages (ui_navi.c) */
 /* gBossStatus.unk8: the boss hit points NaviB shows. Call every frame of a boss

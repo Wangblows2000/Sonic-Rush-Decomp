@@ -54,7 +54,7 @@ static void call(DcpFn f, DcPlayer *w) {
     if (f != NULL)
         f(w);
 }
-#define WATER (g_obj_camera[0].water) /* gCamera.unk62 */
+#define WATER (obj_water_of(w)) /* gCamera.unk62 (Battle Play: the player's own level) */
 
 /* ------------------------------------------- Player_ApplyAutoRunAcceleration */
 void Player_ApplyAutoRunAcceleration(DcPlayer *w) {
@@ -649,7 +649,7 @@ void Player_UpdateUnderwater(DcPlayer *w) {
         return;
     if (!(W.flags & 1))
         return;
-    lvl = g_obj_camera[w->cam < 2 ? w->cam : 0].water;
+    lvl = obj_water_of(w);   /* gCamera[w->cam].unk62 (Battle Play: the player's own level) */
     if (lvl != 0) {
         if ((w->y >> 8) > lvl) {
             if (!(w->pf & 0x4000000)) {

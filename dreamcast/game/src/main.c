@@ -36,6 +36,7 @@ extern struct { u16 unk0; u32 unk4; u16 unk8; u16 unkA; } boss_gBossStatus;
 #include "../camera/camera.h"
 #include "../zonefx/zonefx.h"
 #include "../vs/vs.h"
+#include "../vs/vs_cpu.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -853,6 +854,115 @@ static void vs_script_pad(InputState *in, int frame, int who)
     if((frame + who * 37) % 240 < 20) h |= IN_BOOST;
     in->pressed = h & ~prev[who]; in->released = prev[who] & ~h; in->held = h; prev[who] = h;
 }
+/* Vs CPU: player 2's racing lines (/cd/vs/zNA_C.rte, made from the owner's stages at disc build time) */
+static void *g_cpu_route;
+static uint32_t g_cpu_route_size;
+static u32 g_vs_races;   /* races run (the CPU's seed: reproducible, varied from race to race) */
+/* ---------------------------------------------------------------- single-player gameplay view
+ * Ordinary Story Mode levels (zones 1..7 acts 1 and 2, not a boss arena, the attract demo, time attack,
+ * Battle Play, a special stage or an in-level cutscene) show SP_VIEW_K times the DS window per axis:
+ * 320 x 240 world px at 2.0x instead of 256 x 192 at 2.5x. The camera itself is unchanged (tracking,
+ * lead, smoothing, bounds): the wider window is centred on its DS window and kept inside the camera's
+ * bounds; where the bounds leave less room (a locked area, a narrow room) the widening shrinks so no
+ * more than the bounds is shown. Set SP_VIEW_K to 1.0f for the original view. */
+#define SP_VIEW_K 1.25f
+static float g_sp_k = 1.0f;          /* current widening (eased by the bounds, cut by cutscenes) */
+static int sp_view_eligible(int ok, int stage)
+{
+    return ok && g_player_ok && !g_is_boss && !g_demo && g_dcp_world.mode == UI_MODE_STORY && !cutscene_active() &&
+           stage >= 0 && stage < 21 && k_stages[stage][2] != '3';
+}
+/* after camera_apply: the window to draw (g_cam_x / g_cam_y, render view, UI scale) */
+static void sp_view_begin(int eligible, int new_stage)
+{
+    s32 l, t, r, b, i;
+    float k, kmax, w, h, x, y, dsx = g_cam_x, dsy = g_cam_y;
+    if(!eligible || SP_VIEW_K <= 1.0f) { g_sp_k = 1.0f; return; }
+    /* the camera's limits (its window stays inside them): area bounds and the map */
+    l = g_obj_camera[0].bound[0] >> 8; t = g_obj_camera[0].bound[1] >> 8;
+    r = g_obj_camera[0].bound[2] >> 8; b = g_obj_camera[0].bound[3] >> 8;
+    i = g_obj_camera[2].bound[0] >> 8; if(i > l) l = i;
+    i = g_obj_camera[2].bound[1] >> 8; if(i > t) t = i;
+    i = g_obj_camera[2].bound[2] >> 8; if(r <= l || (i > 0 && i < r)) r = i;
+    i = g_obj_camera[2].bound[3] >> 8; if(b <= t || (i > 0 && i < b)) b = i;
+    /* the DS window may sit outside them (a shake, a look pan): those edges do not limit it */
+    if(dsx < l) l = (s32)dsx;
+    if(dsy < t) t = (s32)dsy;
+    if(dsx + 256 > r) r = (s32)dsx + 256;
+    if(dsy + 192 > b) b = (s32)dsy + 192;
+    kmax = (float)(r - l) / 256.0f;
+    if((float)(b - t) / 192.0f < kmax) kmax = (float)(b - t) / 192.0f;
+    k = SP_VIEW_K < kmax ? SP_VIEW_K : kmax;
+    if(k < 1.0f) k = 1.0f;
+    if(new_stage) g_sp_k = k;
+    else if(g_sp_k < k) g_sp_k = g_sp_k + 0.01f > k ? k : g_sp_k + 0.01f;   /* eased: no jump at an area edge */
+    else if(g_sp_k > k) g_sp_k = g_sp_k - 0.01f < k ? k : g_sp_k - 0.01f;
+    if(g_sp_k > kmax) g_sp_k = kmax < 1.0f ? 1.0f : kmax;              /* never past the bounds */
+    w = 256.0f * g_sp_k; h = 192.0f * g_sp_k;
+    x = dsx - (w - 256.0f) * 0.5f; y = dsy - (h - 192.0f) * 0.5f;
+    if(x + w > r) x = r - w;
+    if(x < l) x = l;
+    if(y + h > b) y = b - h;
+    if(y < t) y = t;
+    g_cam_x = x; g_cam_y = y;
+    g_view_row_ofs = (int)(dsy - y + 0.5f);
+    render_set_view(0.0f, 0.0f, 640.0f, 480.0f, 2.5f / g_sp_k, 0);
+    ui_set_world_scale(2.5f / g_sp_k);
+}
+/* after the frame: everything else draws with the original view */
+static void sp_view_end(void)
+{
+    render_reset_view();
+    g_view_row_ofs = 0;
+    ui_set_world_scale(2.5f);
+}
+
+static int vs_cpu_skill(void)
+{
+    uint32_t sz;
+    char *t = load_file("/cd/debug/cpu_skill.txt", &sz);   /* test builds: 0 easy, 1 normal, 2 hard */
+    int k = t ? atoi(t) : VSC_NORMAL;
+    free(t);
+    return k < VSC_EASY || k > VSC_HARD ? VSC_NORMAL : k;
+}
+/* the "CPU" tag of player 2 in the bar between the viewports: the name plates' font (font8.bin) */
+static Texture g_cpu_tag;
+static int g_cpu_tag_w;
+static void vs_cpu_tag_load(void)
+{
+    unsigned char mask[32 * 8];
+    uint16_t px[32 * 8];
+    int i;
+    if(g_cpu_tag.ptr) return;
+    g_cpu_tag_w = menus_text_mask("CPU", mask, 32, 8);
+    if(g_cpu_tag_w <= 0) return;
+    for(i = 0; i < 32 * 8; i++) px[i] = mask[i] ? 0xffff : 0x0000;   /* ARGB4444: white ink */
+    g_cpu_tag.ptr = pvr_mem_malloc(sizeof px);
+    if(!g_cpu_tag.ptr) return;
+    pvr_txr_load(px, g_cpu_tag.ptr, sizeof px);
+    g_cpu_tag.w = 32; g_cpu_tag.h = 8; g_cpu_tag.fmt = PVR_TXRFMT_ARGB4444; g_cpu_tag.bytes = sizeof px; g_cpu_tag.twiddled = 0;
+}
+static void vs_cpu_tag_free(void)
+{
+    if(g_cpu_tag.ptr) pvr_mem_free(g_cpu_tag.ptr);
+    memset(&g_cpu_tag, 0, sizeof g_cpu_tag);
+}
+/* player 2's own water level (objects/obj_player.c obj_water_of) into its camera: the viewport's water
+ * line and zone effects (the objects run with player 1's camera) */
+static void vs_sync_water(void)
+{
+    u16 wl;
+    u32 wf;
+    int k;
+    if(!g_obj_ok || !objects_player_water(1, &wl, &wf)) return;
+    vs_load(1);
+    for(k = 0; k < 2; k++) {
+        g_obj_camera[k].water = wl;
+        g_obj_camera[k].flags = (g_obj_camera[k].flags & ~0x3000000u) | wf;
+    }
+    vs_save(1);
+    vs_load(0);
+}
 static MenuRequest run_vs_stage(MenuRequest r)
 {
     for(;;) {
@@ -866,7 +976,8 @@ static MenuRequest run_vs_stage(MenuRequest r)
         memset(&in0, 0, sizeof in0); memset(&in1, 0, sizeof in1);
         if(r.character2 == r.character) r.character2 = !r.character;   /* PlayerSelectMenu: never the same character */
         if(idx < 0 || r.act >= 2) { printf("vs: stage z%d%d not available\n", r.zone + 1, r.act + 1); memset(&next, 0, sizeof next); return next; }
-        printf("vs: race z%d%d, P1 %s, P2 %s\n", r.zone + 1, r.act + 1, r.character ? "Blaze" : "Sonic", r.character2 ? "Blaze" : "Sonic");
+        printf("vs: race z%d%d, P1 %s, P2 %s%s\n", r.zone + 1, r.act + 1, r.character ? "Blaze" : "Sonic", r.character2 ? "Blaze" : "Sonic",
+               r.cpu ? " (CPU)" : "");
         vs_ctx_alloc();
         g_chara = r.character;
         load_player_model();
@@ -912,6 +1023,20 @@ static MenuRequest run_vs_stage(MenuRequest r)
         ui_vs_hud_reset();
         vs_begin(&g_player, &g_player2);
         vs_set_camera_shake_fn(vs_cam_shake);
+        if(r.cpu) {   /* Vs CPU: player 2's racing lines for this stage and character */
+            char path[64];
+            u32 seed = 0x5eed1u + g_vs_races * 7919u + (u32)(r.zone * 16 + r.act) * 131u;
+            int skill = vs_cpu_skill();
+            free(g_cpu_route); g_cpu_route = NULL; g_cpu_route_size = 0;
+            snprintf(path, sizeof path, "/cd/vs/z%d%d_%d.rte", r.zone + 1, r.act + 1, r.character2);
+            g_cpu_route = load_file(path, &g_cpu_route_size);
+            if(vs_cpu_begin(1, g_cpu_route, g_cpu_route_size, seed, skill) != 0)
+                printf("vs: CPU has no racing line (%s), it drives by sight\n", path);
+            else
+                printf("vs: CPU line %s (%lu bytes), seed %lu, skill %d\n", path, (unsigned long)g_cpu_route_size, (unsigned long)seed, skill);
+            vs_cpu_tag_load();
+        }
+        g_vs_races++;
         vs_load(0);
         while(vs_info()->exit == VS_EXIT_NONE) {
             uint16_t h[2], pr[2], rl[2];
@@ -925,7 +1050,8 @@ static MenuRequest run_vs_stage(MenuRequest r)
                 free(t);
                 printf("vs: controllers A %d B %d, scripted pads %d\n", input_port_present(0), input_port_present(1), g_vs_script);
             }
-            if(g_vs_script >= 1) vs_script_pad(&in1, frame, 1);
+            if(r.cpu) memset(&in1, 0, sizeof in1);   /* Vs CPU: no controller for player 2 */
+            else if(g_vs_script >= 1) vs_script_pad(&in1, frame, 1);
             if(g_vs_script >= 2) vs_script_pad(&in0, frame, 0);
             if(go && ((in0.pressed | in1.pressed) & IN_START)) paused = !paused;
             if(paused && ((in0.pressed | in1.pressed) & IN_TRICK)) vs_request_exit(VS_EXIT_QUIT);
@@ -940,6 +1066,7 @@ static MenuRequest run_vs_stage(MenuRequest r)
             h[0] = ds_pad(in0.held); pr[0] = ds_pad(in0.pressed); rl[0] = ds_pad(in0.released);
             h[1] = ds_pad(in1.held); pr[1] = ds_pad(in1.pressed); rl[1] = ds_pad(in1.released);
             if(!run) { h[0] = h[1] = pr[0] = pr[1] = rl[0] = rl[1] = 0; }
+            else if(r.cpu) vs_cpu_pad(1, &g_player2, &g_player, &h[1], &pr[1], &rl[1]);   /* the CPU's pad */
             uint64_t tp0 = timer_us_gettime64(), tp1, tp2, tp3;
             static uint64_t vs_prof[4];
             if(!paused) {
@@ -980,6 +1107,7 @@ static MenuRequest run_vs_stage(MenuRequest r)
                 if(g_obj_ok && run) objects_update(&g_player);
                 if(run) vs_after_players();
                 vs_save(0);   /* objects_update ran with player 1's camera loaded (shakes, gCamera) */
+                vs_sync_water();
                 if(g_dcp_world.flags & 1) g_dcp_world.frame++;   /* Stage_Main */
                 for(i = 0; i < 2; i++) { vs_load(i); camera_frame_end(); vs_save(i); }
                 vs_frame_end();
@@ -1036,6 +1164,9 @@ static MenuRequest run_vs_stage(MenuRequest r)
             draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 224, 640, 32, 0, 0, 0, 0, 97.0f, 0xff101828);
             draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 224, 8, 32, 0, 0, 0, 0, 97.5f, g_player.chara ? 0xffb050e0 : 0xff2060ff);
             draw_rect_screen(NULL, PVR_LIST_TR_POLY, 632, 224, 8, 32, 0, 0, 0, 0, 97.5f, g_player2.chara ? 0xffb050e0 : 0xff2060ff);
+            if(r.cpu && g_cpu_tag.ptr)   /* player 2 is the CPU: "CPU" at 2x by its colour */
+                draw_rect_screen(&g_cpu_tag, PVR_LIST_TR_POLY, 624 - g_cpu_tag_w * 2, 232, (float)(g_cpu_tag_w * 2), 16, 0, 0,
+                                 (float)g_cpu_tag_w, 8, 97.6f, 0xffffffff);
             ui_vs_titlecard_draw();   /* StageTitleCard: the VS card, "Ready? / GO!" */
             if(paused) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 96.0f, 0x80000000);
             render_end_list();
@@ -1050,6 +1181,11 @@ static MenuRequest run_vs_stage(MenuRequest r)
                                   vs_prof[0] / 120000.0, vs_prof[1] / 120000.0, vs_prof[2] / 120000.0);
                 memset(vs_prof, 0, sizeof vs_prof);
                 t_prev = now;
+            }
+            if(frame % 120 == 0 && g_vs_script > 0 && r.cpu) {
+                const VsCpuStats *cs = vs_cpu_stats(1);
+                printf("vs cpu: line point %d/%d, on %d off %d, recover %d, relocate %d, jumps %d boosts %d attacks %d\n", cs->idx,
+                       cs->line_len, cs->on_line, cs->off_line, cs->recover, cs->relocate, cs->jumps, cs->boosts, cs->rival_attacks);
             }
             if(frame % 120 == 0 && g_vs_script > 0)
                 printf("vs frame %d: p1 %ld,%ld rings %d t %d | p2 %ld,%ld rings %d t %d | clock %lu\n", frame,
@@ -1072,6 +1208,7 @@ static MenuRequest run_vs_stage(MenuRequest r)
         }
         printf("vs: race over, winner %d, times %lu / %lu\n", res.winner, (unsigned long)res.time[0], (unsigned long)res.time[1]);
         vs_end();
+        if(r.cpu) { vs_cpu_end(1); free(g_cpu_route); g_cpu_route = NULL; vs_cpu_tag_free(); }
         sound_hooks_set_bank2_player(NULL);
         sound_load_bank2(NULL);
         dcp_model_attach_second(NULL, NULL);
@@ -1213,11 +1350,12 @@ int main(int argc, char **argv)
                 MenuRequest vr;
                 memset(&vr, 0, sizeof vr);
                 vr.kind = MENU_REQ_VS_STAGE; vr.mode = 1; vr.easy = 1; vr.character2 = 1;
-                sscanf(v, "%d %d %d %d %d %d %d", &vr.zone, &vr.act, &vr.character, &vr.character2,
-                       &g_vs_dbg_x, &g_vs_dbg_y, &g_vs_dbg_clock);
+                sscanf(v, "%d %d %d %d %d %d %d %d", &vr.zone, &vr.act, &vr.character, &vr.character2,
+                       &g_vs_dbg_x, &g_vs_dbg_y, &g_vs_dbg_clock, &vr.cpu);
                 free(v);
                 printf("debug start: Battle Play z%d%d\n", vr.zone + 1, vr.act + 1);
                 if(vr.character2 == vr.character) vr.character2 = !vr.character;
+                menus_vs_set_cpu(vr.cpu);
                 menus_vs_prepare(vr.zone, vr.act, vr.character, vr.character2);   /* the selects' state (results, rematch) */
                 run_vs_stage(vr);
             }
@@ -1443,6 +1581,11 @@ int main(int argc, char **argv)
         if(ok && g_player_ok && ui_titlecard_active()) camera_snap_to_player(&g_player);
         sound_update();
         if(ok) camera_apply();   /* g_cam_x / g_cam_y: the DC window + the screen shake */
+        {   /* the single-player gameplay view (wider window in ordinary story levels) */
+            static int sp_last_stage = -1;
+            sp_view_begin(sp_view_eligible(ok, stage), stage != sp_last_stage || !ok);
+            sp_last_stage = ok ? stage : -1;
+        }
         ui_set_camera(g_cam_x, g_cam_y);
 
         { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) objects_models_prepare(); frameprof_add(FP_D_OMODEL, (uint32_t)(timer_us_gettime64() - t0)); }   /* object model / 3D BAC loads, texture uploads, outside the lists */
@@ -1501,7 +1644,7 @@ int main(int argc, char **argv)
             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
         render_end_list();
         g_prof[2] += timer_us_gettime64() - t_draw0;
-        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[2] += timer_us_gettime64() - t1;
+        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[2] += timer_us_gettime64() - t1; sp_view_end();
           frameprof_add(FP_DRAW, (uint32_t)(timer_us_gettime64() - t_draw0)); }
         audio_update();
         if(ok && g_demo) {

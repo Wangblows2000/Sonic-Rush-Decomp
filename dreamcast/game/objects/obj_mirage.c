@@ -484,11 +484,19 @@ Obj *Hand2d_Create(ObjParam *p, s32 b, s32 c) {
 
 /* ===================================================== GmkTable (0x8b) */
 static void GmkTable_State_Released(Obj *w);
+/* gCamera.unk62 for the table: on the DS the local player's; Battle Play (native): the water level of the
+ * player the table carries (its rider, else player 1) */
+static u16 table_water(const Obj *w) {
+    const DcPlayer *p = (const DcPlayer *)w->target;
+    if (p == NULL) p = w->cmap.rider;
+    if (p == NULL) p = player_n(0);
+    return p != NULL ? obj_water_of(p) : CAM0.water;
+}
 static void GmkTable_Action_Release(Obj *w) {
     obj_sfx_own_stop(w, 0);   /* NNS_SndPlayerStopSeq(w->unk1DC, 0) */
     w->h.move_flags &= ~0x80u;
     w->h.vel_y = 0;
-    w->h.y = CAM0.water << 8;
+    w->h.y = table_water(w) << 8;
     w->state = GmkTable_State_Released;
     w->h.gnd_vel = 0x100;
     w->h.vel_x = 0;
@@ -519,7 +527,8 @@ static void table_rot(Obj *w, u16 rx, u16 rz) {
     MTX_Concat33(&m, &r, &m);
     mtx_store(w, &m);
 }
-static int water_on(void) { return CAM0.water != 0 && CAM0.water != 0xffff; }
+static int water_on_for(const Obj *w) { u16 l = table_water(w); return l != 0 && l != 0xffff; }
+#define water_on() water_on_for(w)
 static void GmkTable_State_Main(Obj *w) {
     ObjMtx33 m, r;
     DcPlayer *ring, *p0 = player_n(0);
@@ -588,7 +597,7 @@ static void GmkTable_State_Main(Obj *w) {
         if (w->h.z > 0xf00)
             w->h.z = 0xf00;
     }
-    if (CAM0.water != 0 && w->h.y >= (CAM0.water << 8)) {
+    if (table_water(w) != 0 && w->h.y >= (table_water(w) << 8)) {
         GmkTable_Action_Release(w);
         return;
     }

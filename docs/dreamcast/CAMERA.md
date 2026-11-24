@@ -100,3 +100,31 @@ Makefile and build_disc.sh: `dreamcast/game/camera/patches/`.
 - Sand ship drop-in Egg Pawns spawn when a view comes within 60 px of them: they need view 1
   = the DS partner screen (gCamera[1], 272 px above), not the window − 192 px. The first
   integration returned g_obj_camera[1] (the view itself, never moving); fixed to gCamera[1].
+
+## 5. Single-player gameplay view (wider window, native)
+
+Ordinary Story Mode levels show 25 % more of the world on each axis: the drawn window is
+320 x 240 world px at 2.0x instead of the DS window's 256 x 192 at 2.5x (`src/main.c`, `SP_VIEW_K`
+1.25; 1.0 gives the original view back).
+
+- **Where:** Story Mode (`gGameState.unk10` 0), zones 1..7, acts 1 and 2. Not in boss arenas
+  (act 3, `g_is_boss`), the attract demo, time attack, Battle Play (two players or Vs CPU: their own
+  loop and split-screen views), special stages, the Extra / final stages, full-screen cutscenes or
+  while an in-level cutscene runs (the view cuts back to 2.5x for it).
+- **The camera is not changed:** Camera_* tracking, lead, smoothing, look up / down, bounds, shake and
+  the object views run as before on the DS window. After `camera_apply`, `sp_view_begin` centres the
+  wider window on it and keeps it inside the camera's limits (the area bounds and the map); where the
+  limits leave less than 320 x 240 (a locked area, a narrow room), the widening shrinks to fit (eased
+  by 0.01 a frame, never past the limits), so nothing outside them is shown. `sp_view_end` restores the
+  default view after the frame, so every other mode draws as before.
+- **Drawing:** the layers, objects, player model and effects already draw through the view
+  (`VIEW_SCALE`, `VIEW_W/H`). The zone BG line tables describe the DS window's 192 rows:
+  `level_draw_bg_lines` draws the whole window and continues the edge rows above and below
+  (`g_view_row_ofs` = rows the window starts above the DS window; the water split row moves with it).
+  The Water Palace surface sprites cover the window width. World-anchored UI sprites use the view's
+  scale (`ui_set_world_scale`). The HUD is screen-space and unchanged.
+- **Unchanged:** world coordinates, physics, collision, object spawning (the object views are the DS
+  windows as before), timing.
+- **Checked in Flycast:** Leaf Storm Act 1 (start, running, slopes, a forced death and the restart
+  with the title card): wider window, full-height background, 59.3 fps; Leaf Storm boss (z13): original
+  framing; Battle Play Vs CPU: the split screen unchanged (59.3 fps); special stage: unchanged.

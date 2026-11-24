@@ -202,18 +202,29 @@ void level_draw_bg_lines(const Level *lv, const LevelBgLine *lines, int alt_row,
     if(lv->bg_w != lv->bg_tw || lv->bg_h != lv->bg_th) return;   /* the converter makes them equal */
     bg_hdr(lv, lv->bg_pal_bank, &s_bg_hdr[0]);
     if(lv->alt_bg_pal_bank >= 0) bg_hdr(lv, lv->alt_bg_pal_bank, &s_bg_hdr[1]);
-    for(r0 = 0; r0 < 192; r0 = r) {
-        int x = lines[r0].x & 0x1ff, y = lines[r0].y & 0x1ff;
-        k = r0 >= alt_row;
+    /* window row w shows DS row w - g_view_row_ofs; rows outside the DS table continue the nearest
+     * edge row (same horizontal offset, the next BG lines) */
+    {
+    int nrow = (int)(VIEW_H + 0.5f), ofs = g_view_row_ofs;
+#define BGX(w) (lines[(w) - ofs < 0 ? 0 : (w) - ofs > 191 ? 191 : (w) - ofs].x & 0x1ff)
+#define BGY(w) ((lines[(w) - ofs < 0 ? 0 : (w) - ofs > 191 ? 191 : (w) - ofs].y + \
+                 ((w) - ofs < 0 ? (w) - ofs : (w) - ofs > 191 ? (w) - ofs - 191 : 0) - ofs) & 0x1ff)
+    if(nrow < 1) nrow = 1;
+    for(r0 = 0; r0 < nrow; r0 = r) {
+        int x = BGX(r0), y = BGY(r0);
+        k = r0 - ofs >= alt_row;
         /* rows with the same offset; a strip ends where the texture would wrap or the bank changes */
-        for(r = r0 + 1; r < 192; r++) {
-            if((lines[r].x & 0x1ff) != x || (lines[r].y & 0x1ff) != y) break;
-            if((r >= alt_row) != k) break;
+        for(r = r0 + 1; r < nrow; r++) {
+            if(BGX(r) != x || BGY(r) != y) break;
+            if((r - ofs >= alt_row) != k) break;
             if(((r + y) & (lv->bg_h - 1)) == 0) break;
         }
         /* rows below alt_row: the second bank, or the normal one with the tint colour */
         if(cur != k) { pvr_prim(&s_bg_hdr[k && lv->alt_bg_pal_bank >= 0], sizeof(pvr_poly_hdr_t)); cur = k; }
         bg_strip(lv, r0, r, x, y, z, (k && lv->alt_bg_pal_bank < 0) ? alt_argb : 0xffffffff);
+    }
+#undef BGX
+#undef BGY
     }
 }
 

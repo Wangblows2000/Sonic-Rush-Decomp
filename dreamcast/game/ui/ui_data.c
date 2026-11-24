@@ -338,6 +338,8 @@ void ui_hud_viewport_end(const int *saved) {
     s_safe_x0 = saved[0]; s_safe_y0 = saved[1]; s_safe_x1 = saved[2]; s_safe_y1 = saved[3];
 }
 static float s_cam_x, s_cam_y;
+static float s_world_k = 2.5f;   /* screen px per world px of UI_SP_WORLD (ui_set_world_scale) */
+void ui_set_world_scale(float k) { s_world_k = k > 0.0f ? k : 2.5f; }
 /* UI_SP_NAVI_B .. UI_SP_NAVI_FACE */
 static struct { float dx, dy, sx, sy, k; } s_space[3];
 
@@ -427,10 +429,10 @@ static void xform(int space, float x, float y, float *ox, float *oy, float *k) {
         *oy = s_space[i].dy + (y - s_space[i].sy) * *k;
         break;
     }
-    case UI_SP_WORLD:
-        *k = 2.5f;
-        *ox = (x - s_cam_x) * 2.5f;
-        *oy = (y - s_cam_y) * 2.5f;
+    case UI_SP_WORLD:   /* the world view's scale (2.5; the single-player view: ui_set_world_scale) */
+        *k = s_world_k;
+        *ox = (x - s_cam_x) * s_world_k;
+        *oy = (y - s_cam_y) * s_world_k;
         break;
     default:
         *k = 2.5f;
