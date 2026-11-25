@@ -1,8 +1,8 @@
 # Sonic Rush — native Sega Dreamcast port (`dreamcast-port` branch)
 
 <img width="800" height="800" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
-<img width="340" height="220" alt="sheet1" src="https://github.com/user-attachments/assets/95e05d08-337f-4462-a840-d29d4b755aa8" />
-<img width="340" height="220" alt="sheet2" src="https://github.com/user-attachments/assets/8bfe2bb6-8e22-452e-b32f-4d28b75c9fd9" />
+<img width="400" height="280" alt="sheet1" src="https://github.com/user-attachments/assets/95e05d08-337f-4462-a840-d29d4b755aa8" />
+<img width="400" height="280" alt="sheet2" src="https://github.com/user-attachments/assets/8bfe2bb6-8e22-452e-b32f-4d28b75c9fd9" />
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
