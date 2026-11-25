@@ -40,8 +40,7 @@ Supported ROM: Sonic Rush (Europe) `ASCP` rev 0, SHA-1
 
 The whole game runs in the Flycast emulator: title intro and menus, zone map,
 Sonic, Blaze and Extra stories with every act, boss, special stage, cutscene,
-ending and staff roll, time attack and VMU saves, at 59.9–60 fps. Nothing has
-been verified on real Dreamcast hardware. Differences from the DS and known
+ending and staff roll, time attack and VMU saves, at 59.9–60 fps. Differences from the DS and known
 issues: [docs/dreamcast/KNOWN-ISSUES.md](docs/dreamcast/KNOWN-ISSUES.md).
 Port documentation index: [docs/dreamcast/README.md](docs/dreamcast/README.md).
 
@@ -67,8 +66,6 @@ _Verified progress, updated 2026-11-23 08:13:22Z ([full dashboard](docs/progress
 | ov000 | `████████████████████` 100.00% | 642,724 / 642,724 | 2,799 / 2,799 | 0 |
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
 | **ARM9 total** | `████████████████████` 100.00% | 1,422,472 / 1,422,472 | 7,408 / 7,408 | 0 |
-
-Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
 
 - ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-23 08:10:52Z
 - GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-23 08:11:29Z
