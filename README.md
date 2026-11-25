@@ -17,6 +17,10 @@ data**. Every asset is converted from your own legally dumped ROM.
 
 <img width="619" height="704" alt="RUSHDISC" src="https://github.com/user-attachments/assets/ac24a80c-ad36-483a-a77c-8ecf7d891029" />
 
+<img width="240" height="120" alt="sheet1" src="https://github.com/user-attachments/assets/95e05d08-337f-4462-a840-d29d4b755aa8" />
+<img width="240" height="120" alt="sheet2" src="https://github.com/user-attachments/assets/8bfe2bb6-8e22-452e-b32f-4d28b75c9fd9" />
+
+
 **Windows 10 / 11:** download [`dist/windows/SonicRushDC-Windows.zip`](dist/windows/SonicRushDC-Windows.zip)
 (the "Download raw file" button on GitHub), unzip it, double-click
 `SonicRushDC.exe`, choose your ROM and press **Make my Dreamcast disc!** About five minutes later
