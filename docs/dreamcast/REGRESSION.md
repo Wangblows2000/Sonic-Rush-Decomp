@@ -44,7 +44,7 @@ takes about 1 s. The Flycast build used has states but no rewind and no Lua.
 | Sonic story | full run, new save: every act, boss, cutscene, map talk, ending, staff roll and unlock notice; no crash; no model load after a stage's first frame |
 | Blaze story | full run (39 min of play): zones in Blaze's order, talks, cutscenes, ending, staff roll; progress kept after a reboot |
 | Extra story | full run (20 min): script, Extra boss, ExtraAct, ending, staff roll 2; extra-cleared flag kept after a reboot; START pause in the Extra boss (CONTINUE / GO BACK) |
-| Bosses | every boss (1–7, final, Extra) cleared as Sonic and as Blaze; uncapped Sonic fights showed every attack phase; mid-fight talks freeze the fight; a death restarts the fight at full boss health |
+| Bosses | every boss (1–7, final, Extra) cleared as Sonic and as Blaze; uncapped Sonic fights showed every attack phase; mid-fight talks freeze the fight; a death restarts the fight at full boss health, with a new player at the start and the arena's rings and objects made again (StageRestart_Create: an idle player in each of the 7 story boss arenas died, restarted 2-3 times and reached the game over in Flycast; before, a crush could leave the player in the floor at every respawn) |
 | Special stages | entry by boosting at the special ring, clear and fail paths, emerald saved; controller scheme (Trick Spring buttons, A attack, START prompt) |
 | Water Palace | above / below the water line with the tinted palettes, bubbles, drown countdown and jingle, music restart after the respawn (Sonic and Blaze) |
 | Time attack, game over, continue | reached and completed in Flycast |

@@ -119,8 +119,13 @@ Ordinary Story Mode levels show 25 % more of the world on each axis: the drawn w
   default view after the frame, so every other mode draws as before.
 - **Drawing:** the layers, objects, player model and effects already draw through the view
   (`VIEW_SCALE`, `VIEW_W/H`). The zone BG line tables describe the DS window's 192 rows:
-  `level_draw_bg_lines` draws the whole window and continues the edge rows above and below
-  (`g_view_row_ofs` = rows the window starts above the DS window; the water split row moves with it).
+  `level_draw_bg_lines` draws them zoomed (`g_bg_zoom` = the window's size over the DS window's,
+  1.25): the DS screen's 256 x 192 BG fills the whole window, each DS row a little taller, so no BG
+  row or column the DS never showed comes into view (before, the rows above the DS window showed
+  the texture's other end, a repeating band at the top, and the columns beside it a seam). The
+  Water Palace tint split stays at the water line's place in the window (`g_view_row_ofs` + the
+  split row). Only the story acts' wider view sets the zoom; Battle Play, bosses, special stages
+  and cutscenes draw their BG as before.
   The Water Palace surface sprites cover the window width. World-anchored UI sprites use the view's
   scale (`ui_set_world_scale`). The HUD is screen-space and unchanged.
 - **Unchanged:** world coordinates, physics, collision, object spawning (the object views are the DS

@@ -153,6 +153,7 @@ static void boss_restart_hook(void *ctx, DcPlayer *p)
 {
     if(g_prev_boss_restart) g_prev_boss_restart(ctx, p);
     if(g_is_boss && g_dcp_world.mode != 1 && !(p->pf2 & 0x400000)) g_boss_restart = 1;
+    printf("restart: boss %d, lives %d, rings %d, frame %lu\n", g_is_boss, (int)g_dcp_world.lives, (int)p->rings, (unsigned long)g_dcp_world.frame);
 }
 
 static void stage_exit_hook(void *ctx, s32 kind)
@@ -253,6 +254,36 @@ static void spawn_player(Level *lv)
     camera_apply();
     ui_set_camera(g_cam_x, g_cam_y);
     printf("player spawned at %d,%d\n", sx, sy);
+}
+
+/* StageRestart_Create in a boss act (Player_Respawn after a death): the DS destroys every task and
+ * creates the stage again, so the fight starts over from nothing of the last attempt: a new player at
+ * PlayerStart (Player_Create: no ride, no crush, no 3D depth, no flags of the death), the rings and
+ * the objects again (RingManager_Create: the arena's rings are back), the water level and the boss.
+ * Lives, score and the stage clock are the UI's (ui_stage_restart). Before this only the boss was made
+ * again: a crush by the arena left the player in the floor at the respawn, and it fell to its death
+ * again and again until the game was over; and the rings taken stayed gone. */
+static void boss_stage_restart(Level *lv)
+{
+    uint32_t i;
+    const rlvl_object_t *obj = (const rlvl_object_t *)(lv->data + lv->hdr->sec[RLVL_SEC_OBJECTS].offset);
+    int sx = 128, sy = 128;
+    for(i = 0; i < lv->hdr->num_objects; i++)
+        if(obj[i].type == 114) { sx = obj[i].x; sy = obj[i].y; break; }   /* PlayerStart */
+    memset(&g_player, 0, sizeof(g_player));
+    dcp_player_create(&g_player, g_chara, 0, sx, sy);
+    objects_shutdown();
+    if(g_model_ok) dcp_model_attach(&g_dcp_model, &g_player);
+    g_obj_ok = objects_init(&g_map, lv->data) == 0;
+    if(g_obj_ok) {
+        objects_add_player(&g_player); objects_set_view_count(3); objects_respawn_view();
+        objects_set_player_anim_done(!g_model_ok);
+        objects_set_model_sprites(0);
+        objects_models_prepare();   /* (the same stage: the models stay loaded) */
+    }
+    sound_obj_reset();
+    ui_bind_player(&g_player);
+    printf("boss: stage restart, player at %d,%d, objects %s, lives %d\n", sx, sy, g_obj_ok ? "ok" : "FAILED", (int)g_dcp_world.lives);
 }
 
 static void load_player_model(void)
@@ -913,6 +944,7 @@ static void sp_view_begin(int eligible, int new_stage)
     if(y < t) y = t;
     g_cam_x = x; g_cam_y = y;
     g_view_row_ofs = (int)(dsy - y + 0.5f);
+    g_bg_zoom = g_sp_k > 1.001f ? g_sp_k : 0.0f;   /* the zone BG: the DS screen's, scaled to the window (level.c) */
     render_set_view(0.0f, 0.0f, 640.0f, 480.0f, 2.5f / g_sp_k, 0);
     ui_set_world_scale(2.5f / g_sp_k);
 }
@@ -921,6 +953,7 @@ static void sp_view_end(void)
 {
     render_reset_view();
     g_view_row_ofs = 0;
+    g_bg_zoom = 0.0f;
     ui_set_world_scale(2.5f);
 }
 
@@ -1534,9 +1567,10 @@ int main(int argc, char **argv)
         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
             /* StageTitleCard_State_StartStage: gBossStatus.flags |= 1 at "GO!" (under the white flash), not
              * when the title card task ends: the arena (BossF camera) and the boss start there */
-            if(g_boss_restart) {   /* StageRestart: the boss is created again (full health, waits for the title card) */
+            if(g_boss_restart) {   /* StageRestart: the stage and the boss are created again (full health, waits for the title card) */
                 g_boss_restart = 0;
                 boss_shutdown();
+                boss_stage_restart(&lv);
                 boss_set_paths("/cd/models", "/cd/boss");
                 boss_set_difficulty(g_difficulty);
                 sound_boss_reset();   /* the previous fight's sound handles */
@@ -1607,7 +1641,10 @@ int main(int argc, char **argv)
                 if(g_is_boss) { if(!boss_cleared()) boss_cleared_hook(NULL); }
                 else if(g_obj_hooks.stage_exit) g_obj_hooks.stage_exit(g_obj_hooks.ctx, OBJ_EXIT_CLEAR_DEMO);
             }
+            if(g_dbg_autodie > 0 && g_dbg_autodie_armed && g_dbg_autodie_lives >= 10 && (int)g_dcp_world.frame < g_dbg_autodie)
+                g_player.invuln = 0x10;   /* test builds: autodie lives >= 10 (taken off 10): unhurt until the death */
             if(g_dbg_autodie > 0 && g_dbg_autodie_armed && (int)g_dcp_world.frame == g_dbg_autodie) {
+                if(g_dbg_autodie_lives >= 10) g_dbg_autodie_lives -= 10;
                 g_dbg_autodie_armed = 0;   /* the timer stops while the player dies */
                 printf("debug: autodie, lives %d\n", g_dbg_autodie_lives);
                 g_dcp_world.lives = (u8)g_dbg_autodie_lives;
@@ -1787,7 +1824,7 @@ int main(int argc, char **argv)
         }
         if(++frame % 120 == 0 && dbg_start && !frameprof_enabled()) {   /* frame log: test builds only (each serial line costs ms) */
             uint64_t now = timer_ms_gettime64();
-            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
+            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu | player rings %d lives %d\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0, (int)g_player.rings, (int)g_dcp_world.lives);
             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);
             if(g_obj_ok) {   /* object models in view, PVR triangles; palette writes that waited for a frame start */
                 u32 mv = 0, mt = 0;

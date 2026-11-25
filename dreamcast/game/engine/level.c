@@ -195,6 +195,56 @@ static void bg_strip(const Level *lv, int r0, int r1, int x, int y, float z, uin
     v.x = x1; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
 }
 
+/* the zoomed BG (g_bg_zoom): DS rows [a, b) (b - a within one texture pass) of a run whose first
+ * row r0 is at texture row ty0, at screen rows a * rh .. b * rh, the DS screen's 256 columns across
+ * the window */
+static void bg_strip_zoom(const Level *lv, float a, float b, int r0, int ty0, int x, float rh, float z, uint32_t argb)
+{
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
+    float u0 = (float)(x & (lv->bg_w - 1)) / lv->bg_tw, u1 = u0 + 256.0f / lv->bg_tw;
+    float v0 = (ty0 + (a - r0)) / lv->bg_th, v1 = (ty0 + (b - r0)) / lv->bg_th;
+    float y0 = VIEW_OY + a * rh, y1 = VIEW_OY + b * rh;
+    float x0 = VIEW_OX, x1 = VIEW_OX + g_view_w;
+    v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
+    v.x = x0; v.y = y1; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.x = x0; v.y = y0; v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v));
+    v.x = x1; v.y = y1; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.flags = PVR_CMD_VERTEX_EOL;
+    v.x = x1; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
+}
+
+/* g_bg_zoom: the 192 rows of the DS table over the whole window (each DS row g_view_h / 192 screen
+ * px high), the DS screen's 256 columns across it: the single-player view's wider window shows the
+ * BG the DS showed, a little larger, never the rows above / below or the columns beside it (they
+ * repeat the texture or show its other parts). The tint split (Water Palace's water line,
+ * alt_row in DS rows of the DS window) stays at the water line's place in the window: window row
+ * g_view_row_ofs + alt_row */
+static void bg_lines_zoom(const Level *lv, const LevelBgLine *lines, int alt_row, uint32_t alt_argb, float z)
+{
+    const float rh = g_view_h / 192.0f;
+    const float split = alt_row < 192 ? (float)(g_view_row_ofs + alt_row) / g_bg_zoom : 1.0e9f;   /* in DS rows */
+    int r, r0, cur = -1, mask = lv->bg_h - 1;
+    for(r0 = 0; r0 < 192; r0 = r) {
+        int x = lines[r0].x & 0x1ff, y = lines[r0].y & 0x1ff, ty0 = (r0 + y) & mask;
+        float a, b;
+        for(r = r0 + 1; r < 192; r++) {
+            if((lines[r].x & 0x1ff) != x || (lines[r].y & 0x1ff) != y) break;
+            if(((r + y) & mask) == 0) break;   /* (the texture wraps: a new strip) */
+        }
+        /* above the split: the first bank; below it: the second, or the first with the tint */
+        a = (float)r0; b = (float)r < split ? (float)r : split;
+        if(b > a) {
+            if(cur != 0) { pvr_prim(&s_bg_hdr[0], sizeof(pvr_poly_hdr_t)); cur = 0; }
+            bg_strip_zoom(lv, a, b, r0, ty0, x, rh, z, 0xffffffff);
+        }
+        a = (float)r0 > split ? (float)r0 : split; b = (float)r;
+        if(b > a) {
+            if(cur != 1) { pvr_prim(&s_bg_hdr[lv->alt_bg_pal_bank >= 0], sizeof(pvr_poly_hdr_t)); cur = 1; }
+            bg_strip_zoom(lv, a, b, r0, ty0, x, rh, z, lv->alt_bg_pal_bank < 0 ? alt_argb : 0xffffffff);
+        }
+    }
+}
+
 void level_draw_bg_lines(const Level *lv, const LevelBgLine *lines, int alt_row, uint32_t alt_argb, float z)
 {
     int r, r0, k, cur = -1;
@@ -202,6 +252,7 @@ void level_draw_bg_lines(const Level *lv, const LevelBgLine *lines, int alt_row,
     if(lv->bg_w != lv->bg_tw || lv->bg_h != lv->bg_th) return;   /* the converter makes them equal */
     bg_hdr(lv, lv->bg_pal_bank, &s_bg_hdr[0]);
     if(lv->alt_bg_pal_bank >= 0) bg_hdr(lv, lv->alt_bg_pal_bank, &s_bg_hdr[1]);
+    if(g_bg_zoom > 1.0f) { bg_lines_zoom(lv, lines, alt_row, alt_argb, z); return; }
     /* window row w shows DS row w - g_view_row_ofs; rows outside the DS table continue the nearest
      * edge row (same horizontal offset, the next BG lines) */
     {

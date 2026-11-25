@@ -13,6 +13,10 @@ extern float g_view_x, g_view_y, g_view_w, g_view_h, g_view_scale;
 /* rows (world px) the drawn window starts above the DS window the zone BG tables describe (the
  * single-player view, main.c sp_view; 0 otherwise) */
 extern int g_view_row_ofs;
+/* the zone BG zoom of the single-player view (main.c sp_view: the window's size over the DS window's,
+ * > 1), 0 otherwise: the zone BG (level_draw_bg_lines) shows the DS screen's 256 x 192 BG scaled to
+ * the whole window, so no BG row or column the DS never showed comes into view */
+extern float g_bg_zoom;
 #define VIEW_SCALE g_view_scale
 #define VIEW_OX g_view_x                    /* screen position of the view's top-left */
 #define VIEW_OY g_view_y

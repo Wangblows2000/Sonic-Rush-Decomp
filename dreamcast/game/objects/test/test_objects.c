@@ -2202,6 +2202,36 @@ static void test_death(void) {
     P.move_flags |= 4 | 8;
     dcp_check_crushed(&P);
     CHECK(P.state == dcp_state_die, "Player_CheckCrushed: pf 0x800 with both side walls kills");
+    /* crush by an object (touch, floor and ceiling), then the respawn: nothing stays in touch (the DS
+     * makes the stage again, StageRestart_Create) and the player stands at the marker, not falling to
+     * the pit line again (a reported boss-arena crush respawned in the floor) */
+    {
+        Obj *o = spawn_nth(0x6e, 0, NULL);
+        int fell = 0;
+        if (o == NULL) o = g_obj.head;   /* (any object will do as the crushing one) */
+        g_dcp_world.lives = 3;
+        for (n = 0; n < 0x100 && P.state == dcp_state_die; n++)
+            frame(0);
+        place_on_floor(mk->x, mk->y);
+        frame(0);
+        if (o != NULL) {
+            P.touch = &o->ref;
+            P.pf &= ~0x1000u;
+            P.move_flags |= 1 | 2;
+            dcp_check_crushed(&P);
+            died_at = P.state == dcp_state_die;
+            for (n = 0; n < 0x100 && P.state == dcp_state_die; n++)
+                frame(0);
+            for (n = 0; n < 120; n++) {
+                frame(0);
+                if (P.state == dcp_state_die) fell = 1;
+            }
+            printf("  crush by an object: dead %d, after the respawn touch %p, at (%d,%d), marker (%d,%d), lives %d, died again %d\n",
+                   died_at, (void *)P.touch, P.x >> 8, P.y >> 8, g_dcp_world.check_x, g_dcp_world.check_y, g_dcp_world.lives, fell);
+            CHECK(died_at && P.touch == NULL && !fell && DCP_ABS((P.y >> 8) - g_dcp_world.check_y) <= 32 && g_dcp_world.lives == 2,
+                  "crushed by an object: respawn at the marker on the floor, nothing in touch, one life used");
+        }
+    }
     g_dcp_world.lives = 3;
 }
 
