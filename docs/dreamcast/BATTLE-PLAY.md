@@ -364,6 +364,13 @@ sand ship) followed player 1. The water triggers now also keep a level per playe
     lines by their time harder; a speed / way match on joining; more trials and branches on existing
     files (`-more`: Night Carnival act 1, 22 against 17 of 96 recovered for Sonic, 47 and 47 for Blaze); a
     jump or boost at enemies (it broke lines that bounce off enemies on purpose).
+- **Flycast, release build (this disc, `vsseq.txt`, races one after another, the CPU's lines from
+  the disc).** All 28 line files load. 26 of 28 undisturbed races finish: 25 in exactly the host's goal
+  frame (Leaf Storm act 1 Sonic 5992 to Mirage Road act 2 Sonic 18277), Dead Line act 1 Sonic in 14496
+  (host 14375: another random world). Night Carnival act 2 Sonic and Dead Line act 1 Blaze ran to the
+  time limit (their random worlds; see below; player 1 stood at the start, so there was no rival's path
+  to follow). Two races with player 1 a CPU too (Leaf Storm act 1, Night Carnival act 1) ran to the
+  rival's goal and the results. Emulator only, not hardware.
 - **Random world (finding).** On the DS and on the Dreamcast the game's random seed `gRandSeed` is
   seeded once at boot (`Rand_SeedFromRTC`) and never reset per race. Item box rings, enemy debris (such
   as Night Carnival's Kuragen bombs) and the other random events therefore differ from race to race. The
