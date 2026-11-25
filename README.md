@@ -1,6 +1,8 @@
 # Sonic Rush — native Sega Dreamcast port (`dreamcast-port` branch)
 
 <img width="800" height="800" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
+<img width="340" height="220" alt="sheet1" src="https://github.com/user-attachments/assets/95e05d08-337f-4462-a840-d29d4b755aa8" />
+<img width="340" height="220" alt="sheet2" src="https://github.com/user-attachments/assets/8bfe2bb6-8e22-452e-b32f-4d28b75c9fd9" />
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
@@ -17,8 +19,6 @@ data**. Every asset is converted from your own legally dumped ROM.
 
 <img width="619" height="704" alt="RUSHDISC" src="https://github.com/user-attachments/assets/ac24a80c-ad36-483a-a77c-8ecf7d891029" />
 
-<img width="240" height="120" alt="sheet1" src="https://github.com/user-attachments/assets/95e05d08-337f-4462-a840-d29d4b755aa8" />
-<img width="240" height="120" alt="sheet2" src="https://github.com/user-attachments/assets/8bfe2bb6-8e22-452e-b32f-4d28b75c9fd9" />
 
 
 **Windows 10 / 11:** download [`dist/windows/SonicRushDC-Windows.zip`](dist/windows/SonicRushDC-Windows.zip)
