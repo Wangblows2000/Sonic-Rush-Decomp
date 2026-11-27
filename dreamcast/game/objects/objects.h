@@ -132,6 +132,13 @@ void objects_save_event_state(void);
  * player module's dcp_player_init_state should call it (OBJECTS.md 2.2) */
 void objects_player_init_state(DcPlayer *p);
 void objects_restore_event_state(void);
+/* StageRestart after a death in an act (Player_Respawn, gGameState.unk10 != 1, not a
+ * boss act): every object task and the ring manager go, and the act's objects and
+ * rings are made again from the level's lists (destroyed enemies, broken platforms
+ * and collected rings come back); g_obj_stage (checkpoint, score tally), the
+ * players, the loaded resources and the hooks stay. Call it before the next
+ * objects_frame_begin; the objects in view spawn on that frame. */
+void objects_stage_restart(void);
 int objects_restart_camera(s32 *x, s32 *y, u32 *flags);
 /* gPlayers[]: the players the objects interact with (max 2). Call after
  * dcp_player_create. */

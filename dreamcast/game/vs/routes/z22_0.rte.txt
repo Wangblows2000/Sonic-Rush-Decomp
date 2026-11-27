@@ -1,5 +1,5 @@
 z22 chara 0: GOAL, line 0 8310 frames (2:18.50), 80 lines, 44484 points, 90 trials (last 0 passed), 264.9 s
-key 20cd5c7a, version 5, source ba7e3e11aade7452 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
+key 53ac1ed9, version 5, source 1817d913038e7fd8 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
 line 0: 8310 frames from 252,1984 to 22412,1330, 0 to the goal after
 line 1: 304 frames from 4691,1995 to 5893,1968, 7052 to the goal after
 line 2: 567 frames from 4712,2099 to 6347,2098, 7011 to the goal after

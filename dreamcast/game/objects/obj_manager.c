@@ -1084,10 +1084,73 @@ int objects_restart_camera(s32 *x, s32 *y, u32 *flags) {
     return s_ev.cam_set;
 }
 
+/* the stage's map-object and ring lists as the level file holds them (the DS
+ * loads them again with the zone resources: Stage_SetupZoneResources) */
+static void fill_lists(const rlvl_header_t *h) {
+    u32 i;
+    for (i = 0; i < h->num_objects; i++) {
+        const rlvl_object_t *e = &g_obj.lv_obj[i];
+        ObjParam *p = &g_obj.prm[i];
+        p->x0 = (u8)(e->x & 0xff);
+        p->y0 = (u8)(e->y & 0xff);
+        p->type = e->type;
+        p->flags = e->flags;
+        p->p6 = e->p0;
+        p->p7 = e->p1;
+        p->p8 = e->p2;
+        p->p9 = e->p3;
+        p->ax = e->x;
+        p->ay = e->y;
+    }
+    for (i = 0; i < h->num_rings; i++)
+        g_obj.ring_state[i] = (u8)(g_obj.lv_ring[i].x & 0xff);
+    if (g_obj.dprm != NULL && g_obj.lv_dec != NULL)
+        for (i = 0; i < h->num_decor; i++) {
+            const rlvl_decor_t *e = &g_obj.lv_dec[i];
+            memset(&g_obj.dprm[i], 0, sizeof(ObjParam));
+            g_obj.dprm[i].x0 = (u8)(e->x & 0xff);
+            g_obj.dprm[i].y0 = (u8)(e->y & 0xff);
+            g_obj.dprm[i].type = e->type;
+            g_obj.dprm[i].ax = e->x;
+            g_obj.dprm[i].ay = e->y;
+        }
+}
+
+/* StageRestart (Player_Respawn after a death in an act, gGameState.unk10 != 1):
+ * StageRestart_State_Release (Stage_DestroyTasks), StageRestart_State_SetupResources
+ * (the zone resources again: fresh map-object and ring lists) and
+ * StageRestart_State_CreateStage (Stage_Create: StageEvent_CreateManager,
+ * StageEvent_SpawnAllMapObjects, RingManager_Create). Every object of the act is
+ * made again from the level's list: destroyed enemies, broken or fallen platforms
+ * and collected rings come back. data_022c4590 (g_obj_stage: checkpoint, score
+ * tally) is not part of the stage and is kept. The loaded resources, the players
+ * and the hooks stay (same stage). */
+void objects_stage_restart(void) {
+    const rlvl_header_t *h = g_obj.hdr;
+    if (h == NULL || g_obj.prm == NULL)
+        return;
+    destroy_tasks();
+    fill_lists(h);
+    g_obj.spawn_mask_lo = g_obj.spawn_mask_hi = 0;
+    dec_shared_reset();
+    mirage_reset();
+    carnival_reset();
+    altitude_reset();
+    crisis_reset();
+    itembox_reset();
+    W.objmgr = 0x1c; /* Stage_Create: gObjManagerFlags = 0, then |= 0x1c */
+    rect_check_init();
+    colmap_reset();
+    spawn_all_map_objects();
+    ring_init();
+    obj_vs_reset();
+    g_obj.event_state = 0; /* StageEvent_InitialSpawn on the next frame */
+    obj_log("stage_restart", (s32)h->num_objects, (s32)h->num_rings);
+}
+
 int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     const rlvl_header_t *h = (const rlvl_header_t *)level_data;
     char od[64], sd[64];
-    u32 i;
     int s, loaded = 0;
     DcPlayer *keep[2];
     int nkeep = g_obj.n_players;
@@ -1126,22 +1189,7 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     g_obj.ring_state = (u8 *)calloc(h->num_rings ? h->num_rings : 1, 1);
     if (!g_obj.prm || !g_obj.ring_state)
         return -3;
-    for (i = 0; i < h->num_objects; i++) {
-        const rlvl_object_t *e = &g_obj.lv_obj[i];
-        ObjParam *p = &g_obj.prm[i];
-        p->x0 = (u8)(e->x & 0xff);
-        p->y0 = (u8)(e->y & 0xff);
-        p->type = e->type;
-        p->flags = e->flags;
-        p->p6 = e->p0;
-        p->p7 = e->p1;
-        p->p8 = e->p2;
-        p->p9 = e->p3;
-        p->ax = e->x;
-        p->ay = e->y;
-    }
-    for (i = 0; i < h->num_rings; i++)
-        g_obj.ring_state[i] = (u8)(g_obj.lv_ring[i].x & 0xff);
+    fill_lists(h);
     if (dec_init_level(level_data) != 0)
         return -3;
 #ifdef _arch_dreamcast

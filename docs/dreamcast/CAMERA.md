@@ -88,10 +88,11 @@ Makefile and build_disc.sh: `dreamcast/game/camera/patches/`.
 
 ## 4. Deviations
 
-- Respawn: the DS restarts the stage (`StageRestart_Create` → `Camera_Create`); the DC keeps
-  the objects, so the camera keeps their state (bounds, locks, water, limit) and resets its
-  own: positions and start screen (split line at the checkpoint), look state, lead, area
-  offset overrides (flags 0xF000), locks 0x40/0x80; `objects_respawn_view()` is called.
+- Respawn: the DS restarts the stage (`StageRestart_Create` → `Camera_Create`); the DC makes the
+  act's objects and rings again (`objects_stage_restart`, main.c) but keeps the camera module, so the
+  camera resets its own state: positions and start screen (split line at the checkpoint), look
+  state, lead, area offset overrides (flags 0xF000), locks 0x40/0x80; `objects_respawn_view()` is
+  called.
 - g_obj_camera[2].flags bit 0 (dual screen) stays clear for the object module; the camera
   keeps its own bit. The objects' in-view checks and area bounds use their single-screen form,
   which is also the window's form.

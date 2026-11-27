@@ -1,5 +1,5 @@
 z61 chara 1: GOAL, line 0 8427 frames (2:20.45), 75 lines, 53772 points, 90 trials (last 2 passed), 477.5 s
-key d9589ac3, version 5, source ba7e3e11aade7452 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
+key 79884226, version 5, source 1817d913038e7fd8 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
 line 0: 8427 frames from 128,8256 to 18028,498, 0 to the goal after
 line 1: 375 frames from 188,10386 to 2496,10154, 8055 to the goal after
 line 2: 301 frames from 435,10563 to 2497,10155, 8055 to the goal after

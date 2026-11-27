@@ -142,8 +142,9 @@ Required changes in main.c (not done here, main.c is not in this area):
 - Death: `Player_Respawn` calls `g_dcp_hooks.restart`. The UI hook runs
   `ui_stage_restart` (StageRestart -> Stage_Create: timer reset, new HUD, new
   title card with `gGameState.unk18 |= 2`, so the player is not held) and then
-  chains to main.c's restart hook. That hook must reset the level and objects
-  (`objects_respawn_view`), as StageRestart reloads the stage on the DS.
+  chains to main.c's restart hook. That hook makes the act's objects and rings
+  again on the next frame (`objects_stage_restart`; `objects_respawn_view` through
+  the camera), as StageRestart reloads the stage on the DS.
 - The player model close-up of the title card (StageTitleCardPlayer_Draw) is
   drawn by the player model module (player/dcp_model.c,
   `dcp_model_titlecard_view`). `ui_titlecard_player_draw(&speed, eye, at, &x, &y,

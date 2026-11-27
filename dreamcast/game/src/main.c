@@ -149,10 +149,17 @@ static void (*g_prev_stage_exit)(void *ctx, s32 kind);
  * with full health after the title card. The boss is created again in the main loop. */
 static void (*g_prev_boss_restart)(void *ctx, DcPlayer *p);
 static int g_boss_restart;
+/* the same StageRestart in an act: the DS makes the act's objects and rings again from the level's
+ * lists (Stage_SetupZoneResources + Stage_Create), so a death brings back the enemies, broken
+ * platforms and rings of the last attempt; the player is moved to the checkpoint by Player_Respawn.
+ * Before this the objects of the last attempt were kept: what was destroyed stayed gone, and a
+ * section that needs them (enemies to bounce on, platforms that fall) could no longer be passed. */
+static int g_stage_restart;
 static void boss_restart_hook(void *ctx, DcPlayer *p)
 {
     if(g_prev_boss_restart) g_prev_boss_restart(ctx, p);
     if(g_is_boss && g_dcp_world.mode != 1 && !(p->pf2 & 0x400000)) g_boss_restart = 1;
+    else if(!g_is_boss && g_dcp_world.mode != 1 && !(p->pf2 & 0x400000)) g_stage_restart = 1;
     printf("restart: boss %d, lives %d, rings %d, frame %lu\n", g_is_boss, (int)g_dcp_world.lives, (int)p->rings, (unsigned long)g_dcp_world.frame);
 }
 
@@ -1577,6 +1584,12 @@ int main(int argc, char **argv)
                 g_is_boss = boss_init(lv.hdr->stage, lv.data, &g_player, 1) == 0;
                 g_boss_started = 0;
                 printf("boss: restart %s\n", g_is_boss ? "ok" : "FAILED");
+            }
+            if(g_stage_restart) {   /* StageRestart in an act: the objects and rings again */
+                g_stage_restart = 0;
+                if(g_obj_ok) objects_stage_restart();
+                sound_obj_reset();   /* the previous attempt's object sound handles */
+                printf("stage restart: player at %ld,%ld, lives %d\n", (long)(g_player.x >> 8), (long)(g_player.y >> 8), (int)g_dcp_world.lives);
             }
             if(g_is_boss && !g_boss_started && ui_titlecard_started()) { boss_start(); g_boss_started = 1; }
             if(g_is_boss && g_boss_started && g_dbg_bosshp > 0 && gBossStatus.unk8 > g_dbg_bosshp) {

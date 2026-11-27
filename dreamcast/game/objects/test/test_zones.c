@@ -2235,6 +2235,82 @@ static void test_event_state(int restore_after_init) {
     g_obj_stage.check_x = 0;
 }
 
+/* StageRestart after a death in an act (main.c: Player_Respawn -> objects_stage_restart): the
+ * DS makes the act again from the level's lists, so a destroyed enemy and collected rings are back
+ * at the checkpoint's next pass, while the checkpoint (data_022c4590) is kept. */
+static void test_stage_restart(void) {
+    const ObjStats *st = objects_stats();
+    int i, k, gone_idx = -1, nr = 0, ri[64], back_rings = 0, ok_enemy = 0, ok_vars;
+    u32 e0 = st->enemies_destroyed;
+    printf("[death restart (StageRestart)]\n");
+    for (i = 0, k = 0; i < (int)g_hdr->num_objects; i++)
+        k |= is_enemy(g_obj.lv_obj[i].type);
+    if (!k || !g_hdr->num_rings) {
+        printf("  (no enemies or rings placed in this act)\n");
+        return;
+    }
+    g_n_ring_xy = 0;
+    g_rec_rings = 1;
+    for (i = 0; nr < 4 && i < (int)g_hdr->num_rings; i += 7) {
+        const rlvl_ring_t *rg = &g_obj.lv_ring[i];
+        place_player(rg->x - 40, rg->y);
+        for (k = 0; k < 40; k++)
+            frame(DCP_KEY_RIGHT);
+        for (; nr < g_n_ring_xy && nr < 64; nr++)
+            ri[nr] = placed_ring_index(g_ring_xy[nr][0], g_ring_xy[nr][1]);
+    }
+    g_rec_rings = 0;
+    for (i = 0; gone_idx < 0 && i < (int)g_hdr->num_objects; i++) {
+        const rlvl_object_t *o = &g_obj.lv_obj[i];
+        Obj *w;
+        if (!is_enemy(o->type) || g_obj.prm[i].x0 == 0xff)
+            continue;
+        place_player(o->x - 0x60, o->y);
+        frames(2, 0);
+        w = obj_at(o->type, o->x, o->y);
+        for (k = 0; w && k < 160 && st->enemies_destroyed == e0 && w->used; k++) {
+            if (k % 16 == 0) {
+                place_player(w->h.x >> 8, (w->h.y >> 8) - 36);
+                dcp_act_jump(&P);
+                P.vel_y = 0x200;
+            }
+            frame(DCP_KEY_A);
+        }
+        if (st->enemies_destroyed > e0)
+            gone_idx = i;
+    }
+    g_obj_stage.check_idx = 2;
+    g_obj_stage.check_x = 4321;
+    /* gone before the restart: the destroyed enemy's entry and the collected rings */
+    k = gone_idx >= 0 && g_obj.prm[gone_idx].x0 == 0xff;
+    for (i = 0; i < nr; i++)
+        if (ri[i] >= 0 && g_obj.ring_state[ri[i]] != 0xff)
+            k = 0;
+    CHECK(k, "before the restart: enemy #%d destroyed, %d rings collected", gone_idx, nr);
+    k = W.flags;
+    W.flags |= 2; /* StageRestart_Create (ui_stage_restart): gGameState.unk18 |= 2, PlayerStart keeps the checkpoint */
+    objects_stage_restart();
+    W.flags = k;
+    ok_vars = g_obj_stage.check_idx == 2 && g_obj_stage.check_x == 4321;
+    for (i = 0; i < nr; i++)
+        if (ri[i] >= 0 && g_obj.ring_state[ri[i]] != 0xff)
+            back_rings++;
+    if (gone_idx >= 0) {
+        const rlvl_object_t *g = &g_obj.lv_obj[gone_idx];
+        place_player(g->x - 0x60, g->y - 16);
+        objects_respawn_view();
+        frames(3, 0);
+        ok_enemy = obj_at(g->type, g->x, g->y) != NULL;
+    }
+    result("restart: enemy made again", gone_idx >= 0 && ok_enemy, 1, "destroyed enemy #%d (type 0x%02x) spawns again in view %d",
+           gone_idx, gone_idx >= 0 ? g_obj.lv_obj[gone_idx].type : 0, ok_enemy);
+    if (g_hdr->num_rings && nr > 0)
+        result("restart: rings back", back_rings == nr, 1, "%d of %d collected rings back in the list", back_rings, nr);
+    result("restart: checkpoint kept", ok_vars, 1, "g_obj_stage check index / position kept %d; live objects %u", ok_vars, st->live);
+    g_obj_stage.check_idx = 0;
+    g_obj_stage.check_x = 0;
+}
+
 int main(int argc, char **argv) {
     long size;
     char path[512];
@@ -2381,6 +2457,7 @@ int main(int argc, char **argv) {
     test_sweep();
     test_event_state(0);
     test_event_state(1);
+    test_stage_restart();
     printf("pool peak %u of %d objects\n", g_peak, OBJ_MAX);
     {
         int i, n = 0;
